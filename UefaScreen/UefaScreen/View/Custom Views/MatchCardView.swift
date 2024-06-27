@@ -19,7 +19,7 @@ struct MatchCardView: View {
     @State var hasChangesFirstTeamValue: Bool = false
     
     var body: some View {
-        VStack {
+        ZStack {
             VStack {
                 ZStack {
                     ZStack {
@@ -216,7 +216,8 @@ struct MatchCardView: View {
                                     .opacity(0.7)
                             }
                             .padding(.top,1)
-                            .padding(.bottom, (matchCardDetailVM.matchCardDetail.isFocused1 || matchCardDetailVM.matchCardDetail.isFocused2 && matchCardDetailVM.matchCardDetail.showKeyboard) ? (matchCardDetailVM.matchCardDetail.isSubmitted ? 10 : 140) : 10)
+                            .padding(.bottom, (matchCardDetailVM.matchCardDetail.isFocused1 || matchCardDetailVM.matchCardDetail.isFocused2 && matchCardDetailVM.matchCardDetail.showKeyboard) ? (matchCardDetailVM.matchCardDetail.isSubmitted ? 10 : 145) : 10)
+//                            .padding(.bottom,10)
                         }
                     }
                     
@@ -228,10 +229,10 @@ struct MatchCardView: View {
                             
                             //MARK: First Team To Score Button
                             Button(action: {
-                                                                print(matchCardDetailVM.matchDay.matchIDFstTmVw)
+                                print(matchCardDetailVM.matchDay.matchIDFstTmVw)
                                 showFirstTeamView(true, matchCardDetail?.team1Name ?? String(), matchCardDetail?.team2Name ?? String(), matchCardDetail?.matchid ?? String())
-                                                                    print(matchCardDetailVM.matchDay.matchIDFstTmVw)
-                                                                    print(firstTeamToScore)
+                                print(matchCardDetailVM.matchDay.matchIDFstTmVw)
+                                print(firstTeamToScore)
                             }) {
                                 HStack {
                                     Text(hasChangesFirstTeamValue ? "You Predicted:" : "First team to score")
@@ -253,26 +254,26 @@ struct MatchCardView: View {
                                             .frame(width: 20, height: 20)
                                     }
                                 }
-//                                HStack {
-//                                    Text("First team to score")
-//                                        .foregroundColor(.white)
-//                                        .font(.system(size: 15))
-//                                    Text("")
-//                                        .font(.system(size: 15, weight:.bold))
-//                                    Spacer()
-//                                    
-////                                    if hasChangesFirstTeamValue {
-////                                        Image(hasChangesFirstTeamValue ? firstTeamToScore.lowercased() : "")
-////                                            .resizable()
-////                                            .frame(width: 25, height: 25)
-////                                            .clipShape(Circle())
-////                                    } else {
-//                                        Image(systemName:/* hasChangesFirstTeamValue ? firstTeamToScore.lowercased() :*/ "plus.circle")
-//                                            .resizable()
-//                                            .foregroundColor(.yellow)
-//                                            .frame(width: 20, height: 20)
-////                                    }
-//                                }
+                                //                                HStack {
+                                //                                    Text("First team to score")
+                                //                                        .foregroundColor(.white)
+                                //                                        .font(.system(size: 15))
+                                //                                    Text("")
+                                //                                        .font(.system(size: 15, weight:.bold))
+                                //                                    Spacer()
+                                //
+                                ////                                    if hasChangesFirstTeamValue {
+                                ////                                        Image(hasChangesFirstTeamValue ? firstTeamToScore.lowercased() : "")
+                                ////                                            .resizable()
+                                ////                                            .frame(width: 25, height: 25)
+                                ////                                            .clipShape(Circle())
+                                ////                                    } else {
+                                //                                        Image(systemName:/* hasChangesFirstTeamValue ? firstTeamToScore.lowercased() :*/ "plus.circle")
+                                //                                            .resizable()
+                                //                                            .foregroundColor(.yellow)
+                                //                                            .frame(width: 20, height: 20)
+                                ////                                    }
+                                //                                }
                                 .onChange(of: firstTeamToScore) {newValue in
                                     print(matchIDFstTmVw)
                                     //                                    print(matchCardDetail?.matchid ?? "")
@@ -284,7 +285,7 @@ struct MatchCardView: View {
                                         hasChangesFirstTeamValue = true
                                         
                                     } else {
-                                                                                hasChangesFirstTeamValue = false //if uncommented only last selected match gets the first team to score option rest get back to normal
+                                        hasChangesFirstTeamValue = false //if uncommented only last selected match gets the first team to score option rest get back to normal
                                     }
                                 }
                             }
@@ -338,27 +339,30 @@ struct MatchCardView: View {
                                 .padding(.vertical,checkBooster() ? 9 : 10)
                             }
                             .padding(.horizontal, 15)
-                            .padding(.bottom, (matchCardDetailVM.matchCardDetail.isFocused1 || matchCardDetailVM.matchCardDetail.isFocused2 && matchCardDetailVM.matchCardDetail.showKeyboard) ? (matchCardDetailVM.matchCardDetail.isSubmitted ? 40 : 0) : 0)
+                            .padding(.bottom, (matchCardDetailVM.matchCardDetail.isFocused1 || matchCardDetailVM.matchCardDetail.isFocused2 && matchCardDetailVM.matchCardDetail.showKeyboard) ? (matchCardDetailVM.matchCardDetail.isSubmitted ? 45 : 0) : 0)
                             .background(checkBooster() ? Color.yellow : Color.blue0D1E62)
                         }
                         .animation(.default, value: matchCardDetailVM.matchCardDetail.isSubmitted)
                         .padding(.bottom,0)
                     }
                 }
-                .overlay(
-                    VStack {
-                        //MARK: Custom Keyboard Implementation
-                        if ((matchCardDetailVM.matchCardDetail.isFocused1 || matchCardDetailVM.matchCardDetail.isFocused2) && matchCardDetailVM.matchCardDetail.showKeyboard) {
-                            CustomKeyboard(currentEnteredValue: { number in
-                                enterTextInTextFields(withNumber: number)
-                            })
-                            .transition(.move(edge: .bottom))
-                            .animation(.default, value: matchCardDetailVM.matchCardDetail.showKeyboard)
-                        }
-                    }
-                )
+                                
             }
         }
+        .overlay(
+            VStack {
+                Spacer()
+                //MARK: Custom Keyboard Implementation
+                if ((matchCardDetailVM.matchCardDetail.isFocused1 || matchCardDetailVM.matchCardDetail.isFocused2) && matchCardDetailVM.matchCardDetail.showKeyboard) {
+                    CustomKeyboard(currentEnteredValue: { number in
+                        enterTextInTextFields(withNumber: number)
+                    })
+                    .cornerRadius(15)
+                    .transition(.move(edge: .bottom))
+                    .animation(.default, value: matchCardDetailVM.matchCardDetail.showKeyboard)
+                }
+            }
+        )
         .background(Color.blue0D1E62)
         .foregroundColor(.white)
         .onTapGesture {
