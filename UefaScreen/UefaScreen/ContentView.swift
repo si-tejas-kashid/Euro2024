@@ -12,14 +12,12 @@ struct ContentView: View {
     
     var body: some View {
         MatchPredictorView(matchdays: allMatches)
+            .onAppear{
+                sharedData.orientation = UIDevice.current.orientation
+            }
             .onRotate { UIDeviceOrientation in
                 sharedData.orientation = UIDeviceOrientation
             }
-//        StickyViewTrial(matchdays: allMatches)
-        
-//        MatchCardView(matchCardDetail: allMatches.first?.matches?.first, boosterApplied: {booster in })
-        
-//        MatchPredictorViewEnhanced()
     }
 }
 

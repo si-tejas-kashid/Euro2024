@@ -8,13 +8,10 @@
 import SwiftUI
 
 struct FirstTeamToScoreView: View {
-    var matchID: String
-    var team1: String
-    var team2: String
-    var none = "None"
-    var onDismiss: () -> Void
+    @EnvironmentObject var matchCardDetailVM: MatchPredictorVM
+    let match: Match
     @State private var isSelected: String? = ""
-    @State var teamSelected: (String, String) -> ()
+    @State var teamSelected: (String) -> ()
     
     var body: some View {
         VStack {
@@ -54,22 +51,21 @@ struct FirstTeamToScoreView: View {
                 
             }
             
-            Spacer()
             
             HStack {
                 VStack {
                     Button (action: {
-//                        if isSelected != team1 {
-                            isSelected = team1
-                            teamSelected(team1,matchID)
+                        isSelected = match.team1Name
+                        if isSelected != getSelectedTeamByDefault() {
+                        teamSelected(isSelected ?? String())
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                 onDismiss()
                             }
-//                        }
+                        }
                     }) {
                         VStack {
                             ZStack(alignment: .bottomTrailing){
-                                Image(team1.lowercased())
+                                Image(match.team1Name?.lowercased() ?? String())
                                     .resizable()
                                     .frame(width: 60, height: 60)
                                     .clipShape(Circle())
@@ -80,15 +76,15 @@ struct FirstTeamToScoreView: View {
                                             .foregroundColor(Color.greyB2C0C3)
                                     )
                                 
-                                Image(systemName: isSelected == team1 ? "checkmark.circle.fill" : "circle")
+                                Image(systemName: isSelected == match.team1Name ? "checkmark.circle.fill" : "circle")
                                     .background(Color.blue0D1E62)
-                                    .foregroundColor(isSelected == team1 ? .yellow : .white.opacity(0.8))
+                                    .foregroundColor(isSelected == match.team1Name ? .yellow : .white.opacity(0.8))
                                     .frame(width: 20, height: 20)
                                     .clipShape(Circle())
                             }
                         }
                     }
-                    Text(team1)
+                    Text(match.team1Name ?? String())
                         .font(.headline)
                 }
                 
@@ -96,10 +92,12 @@ struct FirstTeamToScoreView: View {
                 
                 VStack {
                     Button (action: {
-                        isSelected = none
-                        teamSelected(String(),matchID)
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            onDismiss()
+                        isSelected = "None"
+                        if isSelected != getSelectedTeamByDefault() {
+                        teamSelected(isSelected ?? String())
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                onDismiss()
+                            }
                         }
                     }) {
                         VStack {
@@ -117,9 +115,9 @@ struct FirstTeamToScoreView: View {
                                             )
                                     )
                                 
-                                Image(systemName: isSelected == nil ? "checkmark.circle.fill" : "circle")
+                                Image(systemName: isSelected == "None" ? "checkmark.circle.fill" : "circle")
                                     .background(Color.blue0D1E62)
-                                    .foregroundColor(isSelected == nil ? .yellow : .white.opacity(0.8))
+                                    .foregroundColor(isSelected == "None" ? .yellow : .white.opacity(0.8))
                                     .frame(width: 20, height: 20)
                                     .clipShape(Circle())
                             }
@@ -133,17 +131,19 @@ struct FirstTeamToScoreView: View {
                 
                 VStack {
                     Button (action: {
-//                        if isSelected != team2 {
-                            isSelected = team2
-                            teamSelected(team2, matchID)
+                        isSelected = match.team2Name
+                        if isSelected != getSelectedTeamByDefault() {
+                        teamSelected(isSelected ?? String())
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                                 onDismiss()
                             }
+                        }
+                            
 //                        }
                     }) {
                         VStack {
                             ZStack(alignment: .bottomTrailing){
-                                Image(team2.lowercased())
+                                Image(match.team2Name?.lowercased() ?? String())
                                         .resizable()
                                         .frame(width: 60, height: 60)
                                         .clipShape(Circle())
@@ -154,34 +154,56 @@ struct FirstTeamToScoreView: View {
                                                 .foregroundColor(Color.greyB2C0C3)
                                         )
                                 
-                                Image(systemName: isSelected == team2 ? "checkmark.circle.fill" : "circle")
+                                Image(systemName: isSelected == match.team2Name ? "checkmark.circle.fill" : "circle")
                                     .background(Color.blue0D1E62)
-                                    .foregroundColor(isSelected == team2 ? .yellow : .white.opacity(0.8))
+                                    .foregroundColor(isSelected == match.team2Name ? .yellow : .white.opacity(0.8))
                                     .frame(width: 20, height: 20)
                                     .clipShape(Circle())
                             }
                         }
                     }
-                    Text(team2)
+                    Text(match.team2Name ?? String())
                         .font(.headline)
                 }
             }
             .padding(.horizontal, 45)
-            
-            Spacer()
+            .padding(.bottom, 60)
+            .padding(.top, 20)
         }
-//        .frame(width: UIScreen.main.bounds.width, height: 200)
-        .frame(maxWidth: .infinity)
+        .onAppear{
+            isSelected = getSelectedTeamByDefault()
+        }
         .cornerRadius(20)
         .background(Color.blue0D1E62)
         .foregroundColor(.white)
     }
+    
+    func onDismiss() -> () {
+        withAnimation(.easeInOut(duration: 0.5)) {
+            matchCardDetailVM.showFirstTeamView = false
+            matchCardDetailVM.selectedMatchCardDetail = nil
+        }
+    }
+    
+    func getSelectedTeamByDefault() -> String? {
+        if matchCardDetailVM.checkIfMatchIDExists(matchID: matchCardDetailVM.selectedMatchCardDetail?.matchid ?? String()) {
+            if let index = matchCardDetailVM.selectedMatchIndexInStoredArr(
+                matchID: matchCardDetailVM.selectedMatchCardDetail?.matchid ?? String()) {
+                return matchCardDetailVM.matchCardStorage[index].firstTeamToScore
+            } else {
+                return String()
+            }
+        } else {
+            return String()
+        }
+    }
+    
 }
 
-#Preview {
-    FirstTeamToScoreView(matchID: "", team1: "Germany", team2: "Italy") {
-        
-    } teamSelected: {_,_  in
-        
-    }
-}
+//#Preview {
+//    FirstTeamToScoreView(match.matchid: "", match.team1Name: "Germany", match.team2Name: "Italy") {
+//
+//    } teamSelected: {_,_  in
+//
+//    }
+//}

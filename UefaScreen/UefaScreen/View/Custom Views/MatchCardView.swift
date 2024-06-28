@@ -10,23 +10,18 @@ import SwiftUI
 struct MatchCardView: View {
     
     var matchCardDetail: Match?
-    @StateObject var matchCardDetailVM = MatchPredictorVM()
-    @EnvironmentObject var sharedData: SharedData
-    var showFirstTeamView: (Bool, String, String, String) -> ()
-    var showLastFiveView: (Bool, String, String) -> ()
-    @Binding var firstTeamToScore: String
-    @Binding var matchIDFstTmVw: String
-    @State var hasChangesFirstTeamValue: Bool = false
+    @EnvironmentObject var viewModel: MatchPredictorVM
+    @StateObject var matchCardViewModel = MatchCardVM()
     
     var body: some View {
-        ZStack {
+        VStack {
             VStack {
                 ZStack {
                     ZStack {
                         Text(matchCardDetail?.matchDate ?? "")
                             .font(.system(size: 15))
                             .bold()
-                        if matchCardDetailVM.matchCardDetail.showToast {
+                        if matchCardViewModel.matchCardVariable.showToast {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 20.0)
                                     .fill(Color.yellow)
@@ -38,7 +33,7 @@ struct MatchCardView: View {
                                     .padding(.horizontal,10)
                                     .foregroundColor(.black)
                                     .transition(.scaleAndFade)
-                                    .animation(.default, value: matchCardDetailVM.matchCardDetail.showToast)
+                                    .animation(.default, value: matchCardViewModel.matchCardVariable.showToast)
                             }
                         }
                     }
@@ -48,7 +43,11 @@ struct MatchCardView: View {
                     HStack{
                         Spacer()
                         Button(action: {
-                            showLastFiveView(true, matchCardDetail?.team1Name ?? String(), matchCardDetail?.team2Name ?? String())
+                            withAnimation(.easeInOut(duration: 0.5)) {
+                                viewModel.showLastFiveMatchView = true
+                                viewModel.selectedMatchCardDetail = matchCardDetail
+                            }
+                            //                            showLastFiveView(true, matchCardDetail?.team1Name ?? String(), matchCardDetail?.team2Name ?? String())
                         }) {
                             Image(systemName: "chart.bar.xaxis")
                                 .resizable()
@@ -89,43 +88,43 @@ struct MatchCardView: View {
                     
                     //MARK: Team 1 Score Field TextField
                     HStack(spacing:20) {
-                        FocusTextField(text: matchCardDetailVM.matchCardDetail.isFocused1 ? self.$matchCardDetailVM.matchCardDetail.blank1.max(1) : self.$matchCardDetailVM.matchCardDetail.textFieldText1.max(1), isFocused: $matchCardDetailVM.matchCardDetail.isFocused1, submitAction: {
+                        FocusTextField(text: matchCardViewModel.matchCardVariable.isFocused1 ? self.$matchCardViewModel.matchCardVariable.blank1.max(1) : self.$matchCardViewModel.matchCardVariable.textFieldText1.max(1), isFocused: $matchCardViewModel.matchCardVariable.isFocused1, submitAction: {
                             onSubmitActions(fromButtons: false)
-                            matchCardDetailVM.matchCardDetail.isFocused1 = false
+                            matchCardViewModel.matchCardVariable.isFocused1 = false
                         },
                                        font: UIFont.boldSystemFont(ofSize: 30), // Custom font
-                                       textColor: matchCardDetailVM.matchCardDetail.isFocused1 ? .white : (matchCardDetailVM.matchCardDetail.textFieldText1.isEmpty || matchCardDetailVM.matchCardDetail.textFieldText1 == "+") ? .yellow : .white
+                                       textColor: matchCardViewModel.matchCardVariable.isFocused1 ? .white : (matchCardViewModel.matchCardVariable.textFieldText1.isEmpty || matchCardViewModel.matchCardVariable.textFieldText1 == "+") ? .yellow : .white
                         )
-                        .accentColor(!($matchCardDetailVM.matchCardDetail.textFieldText1.wrappedValue.isEmpty || $matchCardDetailVM.matchCardDetail.blank1.wrappedValue.isEmpty) ? Color.clear : Color.white)
+                        .accentColor(!($matchCardViewModel.matchCardVariable.textFieldText1.wrappedValue.isEmpty || $matchCardViewModel.matchCardVariable.blank1.wrappedValue.isEmpty) ? Color.clear : Color.white)
                         .keyboardType(.numberPad)
                         .font(.system(size: 30).weight(.bold))
                         .frame(width: 50, height:50)
                         .overlay(
                             RoundedRectangle(cornerRadius: 5.0)
                                 .stroke(lineWidth: 2)
-                                .animation(.default, value: matchCardDetailVM.matchCardDetail.isFocused1)
-                                .background(matchCardDetailVM.matchCardDetail.isFocused1 ? Color.white.opacity(0.1) : .clear)
-                                .foregroundColor(matchCardDetailVM.matchCardDetail.isFocused1 ? .white : .yellow)
+                                .animation(.default, value: matchCardViewModel.matchCardVariable.isFocused1)
+                                .background(matchCardViewModel.matchCardVariable.isFocused1 ? Color.white.opacity(0.1) : .clear)
+                                .foregroundColor(matchCardViewModel.matchCardVariable.isFocused1 ? .white : .yellow)
                                 .frame(width: 50, height:50)
                         )
                         .onTapGesture {
                             withAnimation(.easeInOut(duration: 0.5)) {
-                                self.matchCardDetailVM.matchCardDetail.isFocused1 = true
-                                self.matchCardDetailVM.matchCardDetail.isFocused2 = false
-                                matchCardDetailVM.matchCardDetail.showKeyboard = true
+                                self.matchCardViewModel.matchCardVariable.isFocused1 = true
+                                self.matchCardViewModel.matchCardVariable.isFocused2 = false
+                                matchCardViewModel.matchCardVariable.showKeyboard = true
                             }
                         }
                         
                         //MARK: Team 2 Score Field TextField
                         
-                        FocusTextField(text: matchCardDetailVM.matchCardDetail.isFocused2 ? self.$matchCardDetailVM.matchCardDetail.blank2.max(1) : self.$matchCardDetailVM.matchCardDetail.textFieldText2.max(1), isFocused: $matchCardDetailVM.matchCardDetail.isFocused2, submitAction: {
+                        FocusTextField(text: matchCardViewModel.matchCardVariable.isFocused2 ? self.$matchCardViewModel.matchCardVariable.blank2.max(1) : self.$matchCardViewModel.matchCardVariable.textFieldText2.max(1), isFocused: $matchCardViewModel.matchCardVariable.isFocused2, submitAction: {
                             onSubmitActions(fromButtons: false)
-                            matchCardDetailVM.matchCardDetail.isFocused2 = false
+                            matchCardViewModel.matchCardVariable.isFocused2 = false
                         },
                                        font: UIFont.boldSystemFont(ofSize: 30), // Custom font
-                                       textColor: matchCardDetailVM.matchCardDetail.isFocused2 ? .white : (matchCardDetailVM.matchCardDetail.textFieldText2.isEmpty || matchCardDetailVM.matchCardDetail.textFieldText2 == "+") ? .yellow : .white // Custom color
+                                       textColor: matchCardViewModel.matchCardVariable.isFocused2 ? .white : (matchCardViewModel.matchCardVariable.textFieldText2.isEmpty || matchCardViewModel.matchCardVariable.textFieldText2 == "+") ? .yellow : .white // Custom color
                         )
-                        .accentColor(!($matchCardDetailVM.matchCardDetail.textFieldText2.wrappedValue.isEmpty || $matchCardDetailVM.matchCardDetail.blank2.wrappedValue.isEmpty) ? Color.clear : Color.white)
+                        .accentColor(!($matchCardViewModel.matchCardVariable.textFieldText2.wrappedValue.isEmpty || $matchCardViewModel.matchCardVariable.blank2.wrappedValue.isEmpty) ? Color.clear : Color.white)
                         .keyboardType(.numberPad)
                         .font(.system(size: 30).weight(.bold))
                         .frame(width: 50, height:50)
@@ -133,17 +132,17 @@ struct MatchCardView: View {
                         .overlay(
                             RoundedRectangle(cornerRadius: 5.0)
                                 .stroke(lineWidth: 2)
-                                .animation(.default, value: matchCardDetailVM.matchCardDetail.isFocused2)
-                                .background(matchCardDetailVM.matchCardDetail.isFocused2 ? Color.white.opacity(0.1) : .clear)
-                                .foregroundColor(matchCardDetailVM.matchCardDetail.isFocused2 ? .white : .yellow)
+                                .animation(.default, value: matchCardViewModel.matchCardVariable.isFocused2)
+                                .background(matchCardViewModel.matchCardVariable.isFocused2 ? Color.white.opacity(0.1) : .clear)
+                                .foregroundColor(matchCardViewModel.matchCardVariable.isFocused2 ? .white : .yellow)
                                 .frame(width: 50, height:50)
                         )
                         
                         .onTapGesture {
                             withAnimation(.easeInOut(duration: 0.5)){
-                                self.matchCardDetailVM.matchCardDetail.isFocused1 = false
-                                self.matchCardDetailVM.matchCardDetail.isFocused2 = true
-                                matchCardDetailVM.matchCardDetail.showKeyboard = true
+                                self.matchCardViewModel.matchCardVariable.isFocused1 = false
+                                self.matchCardViewModel.matchCardVariable.isFocused2 = true
+                                matchCardViewModel.matchCardVariable.showKeyboard = true
                             }
                         }
                     }
@@ -186,19 +185,19 @@ struct MatchCardView: View {
                         ForEach(matchCardDetail?.popularPredictions ?? []) {data in
                             VStack {
                                 Button (action: {
-                                    matchCardDetailVM.matchCardDetail.textFieldText1 = data.team1Prediction ?? ""
-                                    matchCardDetailVM.matchCardDetail.blank1 = data.team1Prediction ?? ""
+                                    matchCardViewModel.matchCardVariable.textFieldText1 = data.team1Prediction ?? ""
+                                    matchCardViewModel.matchCardVariable.blank1 = data.team1Prediction ?? ""
                                     
-                                    matchCardDetailVM.matchCardDetail.textFieldText2 = data.team2Prediction ?? ""
-                                    matchCardDetailVM.matchCardDetail.blank2 = data.team2Prediction ?? ""
+                                    matchCardViewModel.matchCardVariable.textFieldText2 = data.team2Prediction ?? ""
+                                    matchCardViewModel.matchCardVariable.blank2 = data.team2Prediction ?? ""
                                     
-                                    matchCardDetailVM.matchCardDetail.selectedButton = data.id
+                                    //                                    matchCardDetailVM.matchCardDetail.selectedButton = data.id
                                     
-                                    onSubmitActions(fromButtons: true)
+                                    onSubmitActions(fromButtons: true, buttonID: data.id)
                                 }) {
                                     RoundedRectangle(cornerRadius: 20.0)
                                         .stroke(Color.yellow, lineWidth: 1.5)
-                                        .background(matchCardDetailVM.matchCardDetail.selectedButton == data.id ? Color.yellow : Color.clear)
+                                        .background(checkPredictedButtonUUID() == data.id ? Color.yellow : Color.clear)
                                         .cornerRadius(12.0)
                                     
                                         .overlay(
@@ -206,7 +205,7 @@ struct MatchCardView: View {
                                                 .padding(.horizontal,8)
                                                 .padding(.vertical,3)
                                         )
-                                        .foregroundColor(matchCardDetailVM.matchCardDetail.selectedButton == data.id ? Color.blue0D1E62 : Color.yellow)
+                                        .foregroundColor(checkPredictedButtonUUID() == data.id ? Color.blue0D1E62 : Color.yellow)
                                 }
                                 .frame(width: 42, height: 22)
                                 .font(.system(size: 15, weight: .medium))
@@ -216,12 +215,11 @@ struct MatchCardView: View {
                                     .opacity(0.7)
                             }
                             .padding(.top,1)
-                            .padding(.bottom, (matchCardDetailVM.matchCardDetail.isFocused1 || matchCardDetailVM.matchCardDetail.isFocused2 && matchCardDetailVM.matchCardDetail.showKeyboard) ? (matchCardDetailVM.matchCardDetail.isSubmitted ? 10 : 145) : 10)
-//                            .padding(.bottom,10)
+                            .padding(.bottom, (matchCardViewModel.matchCardVariable.isFocused1 || matchCardViewModel.matchCardVariable.isFocused2 && matchCardViewModel.matchCardVariable.showKeyboard) ? (viewModel.checkIfSubmitted(matchid: matchCardDetail?.matchid ?? String()) ? 10 : 140) : 10)
                         }
                     }
                     
-                    if matchCardDetailVM.matchCardDetail.isSubmitted {
+                    if viewModel.checkIfSubmitted(matchid: matchCardDetail?.matchid ?? String()) {
                         //                    if true{
                         VStack(spacing:0) {
                             Divider()
@@ -229,68 +227,54 @@ struct MatchCardView: View {
                             
                             //MARK: First Team To Score Button
                             Button(action: {
-                                print(matchCardDetailVM.matchDay.matchIDFstTmVw)
-                                showFirstTeamView(true, matchCardDetail?.team1Name ?? String(), matchCardDetail?.team2Name ?? String(), matchCardDetail?.matchid ?? String())
-                                print(matchCardDetailVM.matchDay.matchIDFstTmVw)
-                                print(firstTeamToScore)
+                                withAnimation(.easeInOut(duration: 0.5)) {
+                                    viewModel.showFirstTeamView = true
+                                    viewModel.selectedMatchCardDetail = matchCardDetail
+                                }
                             }) {
                                 HStack {
-                                    Text(hasChangesFirstTeamValue ? "You Predicted:" : "First team to score")
+                                    Text(checkFirstTeamPrediction() ? "You Predicted:" : "First team to score")
                                         .foregroundColor(.white)
                                         .font(.system(size: 15))
-                                    Text(hasChangesFirstTeamValue ? firstTeamToScore : "")
+                                    Text(checkFirstTeamPrediction() ? firstTeamToScorePredictedTeam() : "")
                                         .font(.system(size: 15, weight:.bold))
                                     Spacer()
                                     
-                                    if hasChangesFirstTeamValue {
-                                        Image(hasChangesFirstTeamValue ? firstTeamToScore.lowercased() : "")
-                                            .resizable()
-                                            .frame(width: 25, height: 25)
-                                            .clipShape(Circle())
+                                    if checkFirstTeamPrediction() {
+                                        if firstTeamToScorePredictedTeam().lowercased() == "none" {
+                                            //                                                ZStack(alignment: .bottomTrailing){
+                                            Text("0 - 0")
+                                                .font(.system(size: 9))
+                                                .padding(7)
+                                                .overlay (
+                                                    Circle()
+                                                        .stroke(lineWidth: 1)
+                                                        .foregroundColor(
+                                                            .white
+                                                                .opacity(0.7)
+                                                        )
+                                                )
+                                            
+                                            
+                                            //                                                }
+                                            
+                                        } else {
+                                            Image(checkFirstTeamPrediction() ? firstTeamToScorePredictedTeam().lowercased() : "")
+                                                .resizable()
+                                                .frame(width: 25, height: 25)
+                                                .clipShape(Circle())
+                                        }
                                     } else {
-                                        Image(systemName: hasChangesFirstTeamValue ? firstTeamToScore.lowercased() : "plus.circle")
+                                        Image(systemName: checkFirstTeamPrediction() ? firstTeamToScorePredictedTeam().lowercased() : "plus.circle")
                                             .resizable()
                                             .foregroundColor(.yellow)
                                             .frame(width: 20, height: 20)
                                     }
                                 }
-                                //                                HStack {
-                                //                                    Text("First team to score")
-                                //                                        .foregroundColor(.white)
-                                //                                        .font(.system(size: 15))
-                                //                                    Text("")
-                                //                                        .font(.system(size: 15, weight:.bold))
-                                //                                    Spacer()
-                                //
-                                ////                                    if hasChangesFirstTeamValue {
-                                ////                                        Image(hasChangesFirstTeamValue ? firstTeamToScore.lowercased() : "")
-                                ////                                            .resizable()
-                                ////                                            .frame(width: 25, height: 25)
-                                ////                                            .clipShape(Circle())
-                                ////                                    } else {
-                                //                                        Image(systemName:/* hasChangesFirstTeamValue ? firstTeamToScore.lowercased() :*/ "plus.circle")
-                                //                                            .resizable()
-                                //                                            .foregroundColor(.yellow)
-                                //                                            .frame(width: 20, height: 20)
-                                ////                                    }
-                                //                                }
-                                .onChange(of: firstTeamToScore) {newValue in
-                                    print(matchIDFstTmVw)
-                                    //                                    print(matchCardDetail?.matchid ?? "")
-                                    //                                    print(hasChangesFirstTeamValue)     //this variable was true even before assigned true after it comes to the rest views other than the one which is selected
-                                    
-                                    if Int(matchIDFstTmVw) == Int(matchCardDetail?.matchid ?? "") {
-                                        print(matchIDFstTmVw)
-                                        print(matchCardDetail?.matchid ?? "")
-                                        hasChangesFirstTeamValue = true
-                                        
-                                    } else {
-                                        hasChangesFirstTeamValue = false //if uncommented only last selected match gets the first team to score option rest get back to normal
-                                    }
-                                }
                             }
                             .padding(.horizontal, 15)
-                            .padding(.vertical, 10)
+                            .padding(.trailing, firstTeamToScorePredictedTeam().lowercased() == "none" ? -8 : 0)
+                            .padding(.vertical, checkFirstTeamPrediction() ? 8 : 10)
                             .background(Color.blue0D1E62)
                             
                             Divider()
@@ -299,181 +283,237 @@ struct MatchCardView: View {
                             
                             //MARK: Booster Button
                             Button(action: {
-                                matchCardDetailVM.matchCardDetail.isBoosterApplied.toggle()
+                                matchCardViewModel.matchCardVariable.isBoosterApplied.toggle()
                                 
-                                if sharedData.isBoosterApplied == matchCardDetail?.matchid {
-                                    sharedData.isBoosterApplied = String()
+                                if viewModel.boosterAppliedMatchID == matchCardDetail?.matchid {
+                                    viewModel.boosterAppliedMatchID = String()
                                 } else {
-                                    sharedData.isBoosterApplied = matchCardDetail?.matchid ?? String()
+                                    viewModel.boosterAppliedMatchID = matchCardDetail?.matchid ?? String()
                                     withAnimation() {
-                                        matchCardDetailVM.matchCardDetail.showToast = true
+                                        matchCardViewModel.matchCardVariable.showToast = true
                                         
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                                             withAnimation {
-                                                matchCardDetailVM.matchCardDetail.showToast = false
+                                                matchCardViewModel.matchCardVariable.showToast = false
                                             }
                                         }
                                     }
                                 }
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                                    //                                    storeProgress(matchid: matchCardDetail?.matchid ?? "", boosterApplied: matchCardViewModel.isBoosterApplied)
+                                }
+                                
+                                
                                 
                             }) {
                                 HStack {
-                                    Text(checkBooster() ? "2x booster applied" : "Play 2x booster")
-                                        .foregroundColor(checkBooster() ? Color("blue0D1E62") : Color.white)
+                                    Text(viewModel.checkBooster(matchid: matchCardDetail?.matchid ?? String()) ? "2x booster applied" : "Play 2x booster")
+                                        .foregroundColor(viewModel.checkBooster(matchid: matchCardDetail?.matchid ?? String()) ? Color("blue0D1E62") : Color.white)
                                         .bold()
                                     
                                     Spacer()
-                                    Image(systemName: checkBooster() ? "bolt.circle.fill" : "plus.circle")
+                                    Image(systemName: viewModel.checkBooster(matchid: matchCardDetail?.matchid ?? String()) ? "bolt.circle.fill" : "plus.circle")
                                         .resizable()
                                         .foregroundColor(.yellow)
-                                        .frame(width: checkBooster() ? 22 : 20, height: checkBooster() ? 22 : 20)
+                                        .frame(width: viewModel.checkBooster(matchid: matchCardDetail?.matchid ?? String()) ? 22 : 20, height: viewModel.checkBooster(matchid: matchCardDetail?.matchid ?? String()) ? 22 : 20)
                                         .overlay(
                                             Circle()
-                                                .stroke(lineWidth: checkBooster() ? 3 : 4)
-                                                .foregroundColor(checkBooster() ? Color.blue0D1E62 : Color.yellow)
+                                                .stroke(lineWidth: viewModel.checkBooster(matchid: matchCardDetail?.matchid ?? String()) ? 3 : 4)
+                                                .foregroundColor(viewModel.checkBooster(matchid: matchCardDetail?.matchid ?? String()) ? Color.blue0D1E62 : Color.yellow)
                                         )
                                         .background(Color.blue0D1E62)
                                         .clipShape(Circle())
                                     
                                 }
-                                .padding(.vertical,checkBooster() ? 9 : 10)
+                                .padding(.vertical,
+                                         viewModel.checkBooster(matchid: matchCardDetail?.matchid ?? String())
+                                         ? 9 : 10)
                             }
                             .padding(.horizontal, 15)
-                            .padding(.bottom, (matchCardDetailVM.matchCardDetail.isFocused1 || matchCardDetailVM.matchCardDetail.isFocused2 && matchCardDetailVM.matchCardDetail.showKeyboard) ? (matchCardDetailVM.matchCardDetail.isSubmitted ? 45 : 0) : 0)
-                            .background(checkBooster() ? Color.yellow : Color.blue0D1E62)
+                            .padding(.bottom, (matchCardViewModel.matchCardVariable.isFocused1 || matchCardViewModel.matchCardVariable.isFocused2 && matchCardViewModel.matchCardVariable.showKeyboard) ? (viewModel.checkIfSubmitted(matchid: matchCardDetail?.matchid ?? String()) ? 40 : 0) : 0)
+                            .background(viewModel.checkBooster(matchid: matchCardDetail?.matchid ?? String()) ? Color.yellow : Color.blue0D1E62)
                         }
-                        .animation(.default, value: matchCardDetailVM.matchCardDetail.isSubmitted)
+                        .animation(.default, value: viewModel.checkIfSubmitted(matchid: matchCardDetail?.matchid ?? String()))
                         .padding(.bottom,0)
                     }
                 }
-                                
+                
             }
-        }
-        .overlay(
-            VStack {
-                Spacer()
-                //MARK: Custom Keyboard Implementation
-                if ((matchCardDetailVM.matchCardDetail.isFocused1 || matchCardDetailVM.matchCardDetail.isFocused2) && matchCardDetailVM.matchCardDetail.showKeyboard) {
-                    CustomKeyboard(currentEnteredValue: { number in
-                        enterTextInTextFields(withNumber: number)
-                    })
-                    .cornerRadius(15)
-                    .transition(.move(edge: .bottom))
-                    .animation(.default, value: matchCardDetailVM.matchCardDetail.showKeyboard)
+            .overlay(
+                VStack {
+                    //MARK: Custom Keyboard Implementation
+                    if ((matchCardViewModel.matchCardVariable.isFocused1 || matchCardViewModel.matchCardVariable.isFocused2) && matchCardViewModel.matchCardVariable.showKeyboard) {
+                        Spacer()
+                        CustomKeyboard(currentEnteredValue: { number in
+                            enterTextInTextFields(withNumber: number)
+                        })
+                        .cornerRadius(15)
+                        .transition(.move(edge: .bottom))
+                        .animation(.default, value: matchCardViewModel.matchCardVariable.showKeyboard)
+                    }
                 }
-            }
-        )
+            )
+        }
         .background(Color.blue0D1E62)
         .foregroundColor(.white)
         .onTapGesture {
             withAnimation(.easeIn(duration: 0.5)) {
-                matchCardDetailVM.matchCardDetail.isFocused1 = false
-                matchCardDetailVM.matchCardDetail.isFocused2 = false
+                matchCardViewModel.matchCardVariable.isFocused1 = false
+                matchCardViewModel.matchCardVariable.isFocused2 = false
             }
             
-            if !matchCardDetailVM.matchCardDetail.isSubmitted {
-                matchCardDetailVM.matchCardDetail.textFieldText1 = "+"
-                matchCardDetailVM.matchCardDetail.blank1 = ""
+            if !(viewModel.checkIfSubmitted(matchid: matchCardDetail?.matchid ?? String())) {
+                matchCardViewModel.matchCardVariable.textFieldText1 = "+"
+                matchCardViewModel.matchCardVariable.blank1 = ""
                 
-                matchCardDetailVM.matchCardDetail.textFieldText2 = "+"
-                matchCardDetailVM.matchCardDetail.blank2 = ""
+                matchCardViewModel.matchCardVariable.textFieldText2 = "+"
+                matchCardViewModel.matchCardVariable.blank2 = ""
             } else {
-                matchCardDetailVM.matchCardDetail.textFieldText1 = matchCardDetailVM.matchCardDetail.savedTeam1Pred
-                matchCardDetailVM.matchCardDetail.textFieldText2 = matchCardDetailVM.matchCardDetail.savedTeam2Pred
-                matchCardDetailVM.matchCardDetail.blank1 = matchCardDetailVM.matchCardDetail.savedTeam1Pred
-                matchCardDetailVM.matchCardDetail.blank2 = matchCardDetailVM.matchCardDetail.savedTeam2Pred
+                matchCardViewModel.matchCardVariable.textFieldText1 = matchCardViewModel.matchCardVariable.savedTeam1Pred
+                matchCardViewModel.matchCardVariable.textFieldText2 = matchCardViewModel.matchCardVariable.savedTeam2Pred
+                matchCardViewModel.matchCardVariable.blank1 = matchCardViewModel.matchCardVariable.savedTeam1Pred
+                matchCardViewModel.matchCardVariable.blank2 = matchCardViewModel.matchCardVariable.savedTeam2Pred
             }
         }
         .onAppear {
-//            matchIDFstTmVw = matchCardDetail?.matchid ?? ""
+            assignTextfieldText()
         }
         
     }
     
     //MARK: Functions
     
-    func checkBooster() -> Bool {
-        return sharedData.isBoosterApplied == matchCardDetail?.matchid
-    }
-    
-    func onSubmitActions(fromButtons: Bool){
+    func onSubmitActions(fromButtons: Bool, buttonID: UUID = UUID()){
         if !fromButtons {
             
-            if matchCardDetailVM.matchCardDetail.blank1.isEmpty {
-                matchCardDetailVM.matchCardDetail.textFieldText1 = "+"
+            if matchCardViewModel.matchCardVariable.blank1.isEmpty {
+                matchCardViewModel.matchCardVariable.textFieldText1 = "+"
             } else {
-                matchCardDetailVM.matchCardDetail.textFieldText1 = matchCardDetailVM.matchCardDetail.blank1
+                matchCardViewModel.matchCardVariable.textFieldText1 = matchCardViewModel.matchCardVariable.blank1
             }
             
-            if matchCardDetailVM.matchCardDetail.blank2.isEmpty {
-                matchCardDetailVM.matchCardDetail.textFieldText2 = "+"
+            if matchCardViewModel.matchCardVariable.blank2.isEmpty {
+                matchCardViewModel.matchCardVariable.textFieldText2 = "+"
             } else {
-                matchCardDetailVM.matchCardDetail.textFieldText2 = matchCardDetailVM.matchCardDetail.blank2
+                matchCardViewModel.matchCardVariable.textFieldText2 = matchCardViewModel.matchCardVariable.blank2
             }
         }
         
-        if !((matchCardDetailVM.matchCardDetail.textFieldText1 == "+") || (matchCardDetailVM.matchCardDetail.textFieldText1 == "")) && !((matchCardDetailVM.matchCardDetail.textFieldText2 == "+") || (matchCardDetailVM.matchCardDetail.textFieldText2 == "")) {
+        if !((matchCardViewModel.matchCardVariable.textFieldText1 == "+") || (matchCardViewModel.matchCardVariable.textFieldText1 == "")) && !((matchCardViewModel.matchCardVariable.textFieldText2 == "+") || (matchCardViewModel.matchCardVariable.textFieldText2 == "")) {
             withAnimation(.easeInOut(duration: 1)) {
-                matchCardDetailVM.matchCardDetail.showToast = true
+                matchCardViewModel.matchCardVariable.showToast = true
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
                     withAnimation(.easeIn(duration: 0.5)) {
-                        matchCardDetailVM.matchCardDetail.isSubmitted = true
-                        matchCardDetailVM.matchCardDetail.savedTeam1Pred = matchCardDetailVM.matchCardDetail.textFieldText1
-                        matchCardDetailVM.matchCardDetail.savedTeam2Pred = matchCardDetailVM.matchCardDetail.textFieldText2
-                        matchCardDetailVM.matchCardDetail.blank1 = matchCardDetailVM.matchCardDetail.savedTeam1Pred
-                        matchCardDetailVM.matchCardDetail.blank2 = matchCardDetailVM.matchCardDetail.savedTeam2Pred
+                        matchCardViewModel.matchCardVariable.savedTeam1Pred = matchCardViewModel.matchCardVariable.textFieldText1
+                        matchCardViewModel.matchCardVariable.savedTeam2Pred = matchCardViewModel.matchCardVariable.textFieldText2
+                        matchCardViewModel.matchCardVariable.blank1 = matchCardViewModel.matchCardVariable.savedTeam1Pred
+                        matchCardViewModel.matchCardVariable.blank2 = matchCardViewModel.matchCardVariable.savedTeam2Pred
+                        
+                        viewModel.storeData(matchid: matchCardDetail?.matchid ?? String(), team1Prediction: matchCardViewModel.matchCardVariable.savedTeam1Pred, team2Prediction: matchCardViewModel.matchCardVariable.savedTeam2Pred)
                     }
                 }
-                matchCardDetailVM.matchCardDetail.showKeyboard = false
-                matchCardDetailVM.matchCardDetail.isFocused1 = false
-                matchCardDetailVM.matchCardDetail.isFocused2 = false
+                matchCardViewModel.matchCardVariable.showKeyboard = false
+                matchCardViewModel.matchCardVariable.isFocused1 = false
+                matchCardViewModel.matchCardVariable.isFocused2 = false
             }
-            
-            matchCardDetailVM.matchCardDetail.selectedButton = matchCardDetail?.popularPredictions?.first{PopularPrediction in
-                PopularPrediction.team1Prediction == matchCardDetailVM.matchCardDetail.textFieldText1 && PopularPrediction.team2Prediction == matchCardDetailVM.matchCardDetail.textFieldText2
-            }?.id
-            
-            
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
             withAnimation {
-                matchCardDetailVM.matchCardDetail.showToast = false
+                matchCardViewModel.matchCardVariable.showToast = false
             }
         }
     }
     
     func enterTextInTextFields(withNumber number: String) {
-        if matchCardDetailVM.matchCardDetail.isFocused2 {
-            matchCardDetailVM.matchCardDetail.blank2 = number
+        if matchCardViewModel.matchCardVariable.isFocused2 {
+            matchCardViewModel.matchCardVariable.blank2 = number
             
             if !(number == "") {
-                matchCardDetailVM.matchCardDetail.textFieldText2 = number
+                matchCardViewModel.matchCardVariable.textFieldText2 = number
             }
             
-            if (!(number == "") && ((matchCardDetailVM.matchCardDetail.textFieldText1 == "+") || (matchCardDetailVM.matchCardDetail.textFieldText1 == ""))) {
-                matchCardDetailVM.matchCardDetail.isFocused1 = true
+            if (!(number == "") && ((matchCardViewModel.matchCardVariable.textFieldText1 == "+") || (matchCardViewModel.matchCardVariable.textFieldText1 == ""))) {
+                matchCardViewModel.matchCardVariable.isFocused1 = true
                 return
             } else {
                 onSubmitActions(fromButtons: false)
             }
         }
         
-        if matchCardDetailVM.matchCardDetail.isFocused1 {
-            matchCardDetailVM.matchCardDetail.blank1 = number
+        if matchCardViewModel.matchCardVariable.isFocused1 {
+            matchCardViewModel.matchCardVariable.blank1 = number
             
             if !(number == "") {
-                matchCardDetailVM.matchCardDetail.textFieldText1 = number
+                matchCardViewModel.matchCardVariable.textFieldText1 = number
             }
             
-            if (!(number == "") && ((matchCardDetailVM.matchCardDetail.textFieldText2 == "+") || (matchCardDetailVM.matchCardDetail.textFieldText2 == ""))) {
-                matchCardDetailVM.matchCardDetail.isFocused2 = true
+            if (!(number == "") && ((matchCardViewModel.matchCardVariable.textFieldText2 == "+") || (matchCardViewModel.matchCardVariable.textFieldText2 == ""))) {
+                matchCardViewModel.matchCardVariable.isFocused2 = true
                 return
             } else {
                 onSubmitActions(fromButtons: false)
             }
         }
     }
+    
+    func checkPredictedButtonUUID() -> UUID? {
+        if viewModel.checkIfMatchIDExists(matchID: matchCardDetail?.matchid ?? String())
+        {
+            if let index = viewModel.matchCardStorage.firstIndex(where: { matchCardStorageModel in
+                matchCardStorageModel.matchID == matchCardDetail?.matchid}) {
+                return matchCardDetail?.popularPredictions?.first(where: { popularPrediction in
+                    popularPrediction.team1Prediction == viewModel.matchCardStorage[index].pred1 &&
+                    popularPrediction.team2Prediction == viewModel.matchCardStorage[index].pred2
+                })?.id
+            } else {
+                return UUID()
+            }
+        } else {
+            return UUID()
+        }
+    }
+    
+    func checkFirstTeamPrediction() -> Bool {
+        if viewModel.checkIfMatchIDExists(matchID: matchCardDetail?.matchid ?? String()) {
+            if let index = viewModel.selectedMatchIndexInStoredArr(matchID: matchCardDetail?.matchid ?? String()) {
+                return viewModel.matchCardStorage[index].firstTeamToScore != String() ? true : false
+            } else {
+                return false
+            }
+        } else {
+            return false
+        }
+    }
+    
+    func firstTeamToScorePredictedTeam() -> String {
+        if viewModel.checkIfMatchIDExists(matchID: matchCardDetail?.matchid ?? String()) {
+        if let index = viewModel.matchCardStorage.firstIndex(where: { matchCardStorageModel in
+                matchCardStorageModel.matchID == matchCardDetail?.matchid}) {
+                return viewModel.matchCardStorage[index].firstTeamToScore
+            } else {
+                return String()
+            }
+        } else {
+            return String()
+        }
+    }
+    
+    func assignTextfieldText() {
+        if viewModel.checkIfMatchIDExists(matchID: matchCardDetail?.matchid ?? String()) {
+            if let index = viewModel.matchCardStorage.firstIndex(where: { matchCardStorageModel in
+                matchCardStorageModel.matchID == matchCardDetail?.matchid}) {
+                matchCardViewModel.matchCardVariable.textFieldText1 = viewModel.matchCardStorage[index].pred1
+                matchCardViewModel.matchCardVariable.blank1 = matchCardViewModel.matchCardVariable.textFieldText1
+                matchCardViewModel.matchCardVariable.savedTeam1Pred = matchCardViewModel.matchCardVariable.blank1
+                matchCardViewModel.matchCardVariable.textFieldText2 = viewModel.matchCardStorage[index].pred2
+                matchCardViewModel.matchCardVariable.blank2 = matchCardViewModel.matchCardVariable.textFieldText2
+                matchCardViewModel.matchCardVariable.savedTeam2Pred = matchCardViewModel.matchCardVariable.blank2
+            }
+        }
+    }
+    
+    
 }
 
 //MARK: Custom transition modifier
@@ -484,13 +524,13 @@ extension AnyTransition {
     }
 }
 
-#Preview {
-    MatchCardView(matchCardDetail: allMatches.first?.matches?.first
-                  , showFirstTeamView: {_,_,_,_  in
-        
-    }, showLastFiveView: {_,_,_ in
-        
-    }, firstTeamToScore: Binding.constant("Germany"), matchIDFstTmVw: Binding.constant("123")
-    )
-    .environmentObject(SharedData())
-}
+//#Preview {
+//    MatchCardView(matchCardDetail: allMatches.first?.matches?.first
+////                  , showFirstTeamView: {_,_,_,_  in
+//
+////    }, showLastFiveView: {_,_,_ in
+//
+////    }, firstTeamToScore: Binding.constant("Germany"), matchIDFstTmVw: Binding.constant("123")
+//    )
+//    .environmentObject(SharedData())
+//}

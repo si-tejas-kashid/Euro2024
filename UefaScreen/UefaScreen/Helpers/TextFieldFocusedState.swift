@@ -8,67 +8,6 @@
 import SwiftUI
 import UIKit
 
-//struct FocusTextField: UIViewRepresentable {
-//    @Binding var text: String
-//    @Binding var isFocused: Bool
-//    var submitAction: () -> Void // Closure for handling submission
-//
-//    class Coordinator: NSObject, UITextFieldDelegate {
-//        var parent: FocusTextField
-//
-//        init(parent: FocusTextField) {
-//            self.parent = parent
-//        }
-//
-//        func textFieldDidBeginEditing(_ textField: UITextField) {
-//            DispatchQueue.main.async {
-//                self.parent.isFocused = true
-//            }
-//        }
-//
-//        func textFieldDidEndEditing(_ textField: UITextField) {
-//            DispatchQueue.main.async {
-//                self.parent.isFocused = false
-//            }
-//        }
-//
-//        func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-//            textField.resignFirstResponder() // Dismiss keyboard
-//            self.parent.submitAction() // Call submit action closure
-//            return true
-//        }
-//
-//        func textFieldDidChangeSelection(_ textField: UITextField) {
-//            DispatchQueue.main.async {
-//                self.parent.text = textField.text ?? ""
-//            }
-//        }
-//    }
-//
-//    func makeUIView(context: Context) -> UITextField {
-//        let textField = UITextField()
-//        textField.delegate = context.coordinator
-//        return textField
-//    }
-//
-//    func updateUIView(_ uiView: UITextField, context: Context) {
-//        uiView.text = text
-//        if isFocused {
-//            uiView.becomeFirstResponder()
-//        } else {
-//            uiView.resignFirstResponder()
-//        }
-//    }
-//
-//    func makeCoordinator() -> Coordinator {
-//        return Coordinator(parent: self)
-//    }
-//}
-
-
-import SwiftUI
-import UIKit
-
 struct FocusTextField: UIViewRepresentable {
     @Binding var text: String
     @Binding var isFocused: Bool
@@ -116,6 +55,8 @@ struct FocusTextField: UIViewRepresentable {
         textField.textAlignment = .center
         textField.keyboardType = .default
         textField.returnKeyType = .done
+        textField.spellCheckingType = .no
+        textField.autocorrectionType = .no
         return textField
     }
 

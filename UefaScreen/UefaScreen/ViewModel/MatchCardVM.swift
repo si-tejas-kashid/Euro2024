@@ -12,5 +12,15 @@ class MatchCardVM: ObservableObject {
 }
 
 struct MatchCardVariables {
-    
+    var isBoosterApplied: Bool = false
+    var textFieldText1: String = "+"
+    var textFieldText2: String = "+"
+    var blank1: String = ""
+    var blank2: String = ""
+    var isFocused1: Bool = false
+    var isFocused2: Bool = false
+    var showToast: Bool = false
+    var showKeyboard: Bool = false
+    var savedTeam1Pred: String = ""
+    var savedTeam2Pred: String = ""
 }
