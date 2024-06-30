@@ -13,7 +13,6 @@ struct ShareLeagueView: View {
     
     var body: some View {
         VStack {
-//            Navbar(navTitleText: "Leagues")
             ScrollView {
                 
                     HStack {
@@ -63,7 +62,6 @@ struct ShareLeagueView: View {
             .navigationBarStyle(backgroundImage: "QSDKNavigationBG", titleColor: .white, points: 0)
             .navigationTitle("Leagues")
         }
-//        .navigationBarStyle(backgroundImage: "QSDKNavigationBG", titleColor: .white, points: matchPredictorVM.matchDays.reduce(0){$0 + ($1.points ?? 0)})
         .navigationBarStyle(backgroundImage: "QSDKNavigationBG", titleColor: .white, points: 0)
     }
 }

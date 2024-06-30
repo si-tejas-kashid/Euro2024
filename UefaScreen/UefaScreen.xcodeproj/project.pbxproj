@@ -8,9 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1851CC9E2C23097800FFB3F0 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1851CC9D2C23097800FFB3F0 /* RoundedCorner.swift */; };
-		187992A12C2AD96D001CADD7 /* MatchPredictorViewEnhanced.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187992A02C2AD96D001CADD7 /* MatchPredictorViewEnhanced.swift */; };
-		187992A32C2AD9F0001CADD7 /* MatchCardViewEnhanced.swift in Sources */ = {isa = PBXBuildFile; fileRef = 187992A22C2AD9F0001CADD7 /* MatchCardViewEnhanced.swift */; };
-		189727A52C2612B400534683 /* SharedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189727A42C2612B400534683 /* SharedData.swift */; };
+		189727A52C2612B400534683 /* CommonData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189727A42C2612B400534683 /* CommonData.swift */; };
 		189F04412C2D658200EFD300 /* DeviceRotationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189F04402C2D658200EFD300 /* DeviceRotationViewModifier.swift */; };
 		18B2EADD2C09EB650025AF79 /* UefaScreenApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B2EADC2C09EB650025AF79 /* UefaScreenApp.swift */; };
 		18B2EADF2C09EB650025AF79 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B2EADE2C09EB650025AF79 /* ContentView.swift */; };
@@ -37,9 +35,7 @@
 
 /* Begin PBXFileReference section */
 		1851CC9D2C23097800FFB3F0 /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
-		187992A02C2AD96D001CADD7 /* MatchPredictorViewEnhanced.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchPredictorViewEnhanced.swift; sourceTree = "<group>"; };
-		187992A22C2AD9F0001CADD7 /* MatchCardViewEnhanced.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MatchCardViewEnhanced.swift; sourceTree = "<group>"; };
-		189727A42C2612B400534683 /* SharedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedData.swift; sourceTree = "<group>"; };
+		189727A42C2612B400534683 /* CommonData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonData.swift; sourceTree = "<group>"; };
 		189F04402C2D658200EFD300 /* DeviceRotationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRotationViewModifier.swift; sourceTree = "<group>"; };
 		18B2EAD92C09EB650025AF79 /* UefaScreen.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UefaScreen.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		18B2EADC2C09EB650025AF79 /* UefaScreenApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UefaScreenApp.swift; sourceTree = "<group>"; };
@@ -139,7 +135,6 @@
 			isa = PBXGroup;
 			children = (
 				18B2EAF42C0EE6E20025AF79 /* ShareLeagueView.swift */,
-				187992A02C2AD96D001CADD7 /* MatchPredictorViewEnhanced.swift */,
 				18B2EAF92C0F27EA0025AF79 /* MatchPredictorView.swift */,
 			);
 			path = Screens;
@@ -149,7 +144,6 @@
 			isa = PBXGroup;
 			children = (
 				18B2EAFE2C0F3F300025AF79 /* MatchCardView.swift */,
-				187992A22C2AD9F0001CADD7 /* MatchCardViewEnhanced.swift */,
 				18B2EB022C10B2E70025AF79 /* CustomKeyboard.swift */,
 				18B2EB062C1744950025AF79 /* FirstTeamToScoreView.swift */,
 				18B2EB082C1839CC0025AF79 /* LastFiveMatchesView.swift */,
@@ -190,7 +184,7 @@
 			children = (
 				18C4A4DA2C2027BF00884EBB /* MatchDay.swift */,
 				18C612FE2C24718C002D1B4C /* ModelData.swift */,
-				189727A42C2612B400534683 /* SharedData.swift */,
+				189727A42C2612B400534683 /* CommonData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -293,11 +287,9 @@
 				18B2EAEF2C0DB5950025AF79 /* ButtonHorizontalAndColored.swift in Sources */,
 				18B2EB072C1744950025AF79 /* FirstTeamToScoreView.swift in Sources */,
 				18B2EB032C10B2E70025AF79 /* CustomKeyboard.swift in Sources */,
-				187992A32C2AD9F0001CADD7 /* MatchCardViewEnhanced.swift in Sources */,
 				18B2EAF52C0EE6E20025AF79 /* ShareLeagueView.swift in Sources */,
-				189727A52C2612B400534683 /* SharedData.swift in Sources */,
+				189727A52C2612B400534683 /* CommonData.swift in Sources */,
 				18B2EB012C104FEA0025AF79 /* Binding + Ext.swift in Sources */,
-				187992A12C2AD96D001CADD7 /* MatchPredictorViewEnhanced.swift in Sources */,
 				18C4A4D62C201E7E00884EBB /* MatchCardVM.swift in Sources */,
 				18B2EB092C1839CC0025AF79 /* LastFiveMatchesView.swift in Sources */,
 				18B2EAF12C0DD3800025AF79 /* NavigationBarModifier.swift in Sources */,

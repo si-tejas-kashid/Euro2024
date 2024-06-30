@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @EnvironmentObject var sharedData: SharedData
+    @EnvironmentObject var sharedData: CommonData
     
     var body: some View {
         MatchPredictorView(matchdays: allMatches)

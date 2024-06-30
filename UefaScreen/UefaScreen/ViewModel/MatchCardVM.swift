@@ -23,4 +23,6 @@ struct MatchCardVariables {
     var showKeyboard: Bool = false
     var savedTeam1Pred: String = ""
     var savedTeam2Pred: String = ""
+    
+    
 }

@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 @MainActor
 final class MatchPredictorVM: ObservableObject {
@@ -42,13 +43,11 @@ final class MatchPredictorVM: ObservableObject {
                     matchCardStorage[index].firstTeamToScore = firstTeamSelected
                 }
             }
-            print(matchCardStorage)
         } else {
             if team1Prediction != String() {
                 let newStorageArr = MatchCardStorageModel(matchID: matchid, pred1: team1Prediction, pred2: team2Prediction, firstTeamToScore: String(), isSubmitted: true)
                 matchCardStorage.append(newStorageArr)
             }
-            print(matchCardStorage)
         }
     }
     
@@ -78,6 +77,28 @@ final class MatchPredictorVM: ObservableObject {
         return matchCardStorage.firstIndex(where: { matchCardStorageModel in
             matchCardStorageModel.matchID == matchID
         })
+    }
+    
+    //MARK: Sheets View Functions and Closures
+    
+    func onDismiss() -> () {
+        withAnimation(.easeInOut(duration: 0.5)) {
+            showFirstTeamView = false
+            selectedMatchCardDetail = nil
+        }
+    }
+    
+    func getSelectedTeamByDefault(matchID: String) -> String? {
+        if checkIfMatchIDExists(matchID: matchID ) {
+            if let index = selectedMatchIndexInStoredArr(
+                matchID: matchID ) {
+                return matchCardStorage[index].firstTeamToScore
+            } else {
+                return String()
+            }
+        } else {
+            return String()
+        }
     }
     
 }

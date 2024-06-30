@@ -9,7 +9,7 @@ import SwiftUI
 
 @main
 struct UefaScreenApp: App {
-    @StateObject private var sharedData = SharedData()
+    @StateObject private var sharedData = CommonData()
     
     var body: some Scene {
         WindowGroup {

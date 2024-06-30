@@ -8,200 +8,123 @@
 import SwiftUI
 
 struct FirstTeamToScoreView: View {
-    @EnvironmentObject var matchCardDetailVM: MatchPredictorVM
-    let match: Match
     @State private var isSelected: String? = ""
     @State var teamSelected: (String) -> ()
+    @EnvironmentObject var matchCardDetailVM: MatchPredictorVM
     
     var body: some View {
         VStack {
-            HStack(alignment: .top) {
-                Spacer()
-                
-                ZStack {
-                    HStack {
-                        VStack() {
-                            Text("First team to score")
-                                .font(.system(size: 20, weight: .bold))
-                            HStack {
-                                Text("Guess right to score")
-                                Text("+2 points")
-                                    .padding(.leading,-5)
-                                    .font(.system(size: 18, weight: .bold))
-                            }
-                            .font(.subheadline)
-                        }
-                        .padding(.top,20)
-                    }
-                    
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            onDismiss()
-                        }) {
-                            Image(systemName: "xmark")
-                                .accentColor(.white)
-                                .opacity(0.6)
-                        }
-                        .padding(.trailing,15)
-                        .padding(.top,-15)
-                    }
-                }
-                
-                
-            }
-            
+            firstTeamToScoreHeaderView                          //firstTeamToScoreHeaderView
             
             HStack {
-                VStack {
-                    Button (action: {
-                        isSelected = match.team1Name
-                        if isSelected != getSelectedTeamByDefault() {
-                        teamSelected(isSelected ?? String())
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                onDismiss()
-                            }
-                        }
-                    }) {
-                        VStack {
-                            ZStack(alignment: .bottomTrailing){
-                                Image(match.team1Name?.lowercased() ?? String())
-                                    .resizable()
-                                    .frame(width: 60, height: 60)
-                                    .clipShape(Circle())
-                                    .overlay(
-                                        Circle()
-                                            .stroke(lineWidth: 2)
-                                            .background(Color.clear)
-                                            .foregroundColor(Color.greyB2C0C3)
-                                    )
-                                
-                                Image(systemName: isSelected == match.team1Name ? "checkmark.circle.fill" : "circle")
-                                    .background(Color.blue0D1E62)
-                                    .foregroundColor(isSelected == match.team1Name ? .yellow : .white.opacity(0.8))
-                                    .frame(width: 20, height: 20)
-                                    .clipShape(Circle())
-                            }
-                        }
-                    }
-                    Text(match.team1Name ?? String())
-                        .font(.headline)
-                }
                 
+                teamOptionInFirstTeamView(teamName: matchCardDetailVM.selectedMatchCardDetail?.team1Name ?? String())
                 Spacer()
-                
-                VStack {
-                    Button (action: {
-                        isSelected = "None"
-                        if isSelected != getSelectedTeamByDefault() {
-                        teamSelected(isSelected ?? String())
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                onDismiss()
-                            }
-                        }
-                    }) {
-                        VStack {
-                            ZStack(alignment: .bottomTrailing){
-                                Text("0 - 0")
-                                    .bold()
-                                    .font(.system(size: 20))
-                                    .frame(width: 60, height: 60)
-                                    .overlay (
-                                        Circle()
-                                            .stroke(lineWidth: 2)
-                                            .foregroundColor(
-                                                .white
-                                                    .opacity(0.7)
-                                            )
-                                    )
-                                
-                                Image(systemName: isSelected == "None" ? "checkmark.circle.fill" : "circle")
-                                    .background(Color.blue0D1E62)
-                                    .foregroundColor(isSelected == "None" ? .yellow : .white.opacity(0.8))
-                                    .frame(width: 20, height: 20)
-                                    .clipShape(Circle())
-                            }
-                        }
-                    }
-                    Text("None")
-                        .font(.headline)
-                }
-                
+                teamOptionInFirstTeamView(teamName: "None")
                 Spacer()
+                teamOptionInFirstTeamView(teamName: matchCardDetailVM.selectedMatchCardDetail?.team2Name ?? String())
                 
-                VStack {
-                    Button (action: {
-                        isSelected = match.team2Name
-                        if isSelected != getSelectedTeamByDefault() {
-                        teamSelected(isSelected ?? String())
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                onDismiss()
-                            }
-                        }
-                            
-//                        }
-                    }) {
-                        VStack {
-                            ZStack(alignment: .bottomTrailing){
-                                Image(match.team2Name?.lowercased() ?? String())
-                                        .resizable()
-                                        .frame(width: 60, height: 60)
-                                        .clipShape(Circle())
-                                        .overlay(
-                                            Circle()
-                                                .stroke(lineWidth: 2)
-                                                .background(Color.clear)
-                                                .foregroundColor(Color.greyB2C0C3)
-                                        )
-                                
-                                Image(systemName: isSelected == match.team2Name ? "checkmark.circle.fill" : "circle")
-                                    .background(Color.blue0D1E62)
-                                    .foregroundColor(isSelected == match.team2Name ? .yellow : .white.opacity(0.8))
-                                    .frame(width: 20, height: 20)
-                                    .clipShape(Circle())
-                            }
-                        }
-                    }
-                    Text(match.team2Name ?? String())
-                        .font(.headline)
-                }
             }
             .padding(.horizontal, 45)
-            .padding(.bottom, 60)
+            .padding(.bottom, 20)
             .padding(.top, 20)
         }
         .onAppear{
-            isSelected = getSelectedTeamByDefault()
+            isSelected = matchCardDetailVM.getSelectedTeamByDefault(matchID: matchCardDetailVM.selectedMatchCardDetail?.matchid ?? String())
         }
         .cornerRadius(20)
         .background(Color.blue0D1E62)
         .foregroundColor(.white)
     }
     
-    func onDismiss() -> () {
-        withAnimation(.easeInOut(duration: 0.5)) {
-            matchCardDetailVM.showFirstTeamView = false
-            matchCardDetailVM.selectedMatchCardDetail = nil
+    //MARK: Header View
+    
+    var firstTeamToScoreHeaderView: some View {
+        HStack(alignment: .top) {
+            Spacer()
+            ZStack {
+                HStack {
+                    VStack() {
+                        Text("First team to score")
+                            .font(.system(size: 20, weight: .bold))
+                        HStack {
+                            Text("Guess right to score")
+                            Text("+2 points")
+                                .padding(.leading,-5)
+                                .font(.system(size: 18, weight: .bold))
+                        }
+                        .font(.subheadline)
+                    }
+                    .padding(.top,20)
+                }
+                
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        matchCardDetailVM.onDismiss()
+                    }) {
+                        Image(systemName: "xmark")
+                            .accentColor(.white)
+                            .opacity(0.6)
+                    }
+                    .padding(.trailing,15)
+                    .padding(.top,-15)
+                }
+            }            
         }
     }
     
-    func getSelectedTeamByDefault() -> String? {
-        if matchCardDetailVM.checkIfMatchIDExists(matchID: matchCardDetailVM.selectedMatchCardDetail?.matchid ?? String()) {
-            if let index = matchCardDetailVM.selectedMatchIndexInStoredArr(
-                matchID: matchCardDetailVM.selectedMatchCardDetail?.matchid ?? String()) {
-                return matchCardDetailVM.matchCardStorage[index].firstTeamToScore
-            } else {
-                return String()
+    //MARK: Team Option View
+    
+    func teamOptionInFirstTeamView(teamName: String) -> some View {
+        VStack {
+            Button (action: {
+                isSelected = teamName
+                if isSelected != matchCardDetailVM.getSelectedTeamByDefault(matchID: matchCardDetailVM.selectedMatchCardDetail?.matchid ?? String()) {
+                teamSelected(isSelected ?? String())
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        matchCardDetailVM.onDismiss()
+                    }
+                }
+            }) {
+                VStack {
+                    ZStack(alignment: .bottomTrailing){
+                        VStack {
+                            if teamName.lowercased() == "none" {
+                                Text("0 - 0")
+                                    .bold()
+                                    .font(.system(size: 20))
+                                    .frame(width: 60, height: 60)
+                            } else {
+                                Image(teamName.lowercased() )
+                                    .resizable()
+                                    .frame(width: 60, height: 60)
+                                    .clipShape(Circle())
+                            }
+                        }
+                            .overlay(
+                                Circle()
+                                    .stroke(lineWidth: 2)
+                                    .background(Color.clear)
+                                    .foregroundColor(Color.greyB2C0C3)
+                            )
+                        
+                        Image(systemName: isSelected == teamName ? "checkmark.circle.fill" : "circle")
+                            .background(Color.blue0D1E62)
+                            .foregroundColor(isSelected == teamName ? .yellow : .white.opacity(0.8))
+                            .frame(width: 20, height: 20)
+                            .clipShape(Circle())
+                    }
+                }
             }
-        } else {
-            return String()
+            Text(teamName)
+                .font(.headline)
         }
     }
-    
 }
 
 //#Preview {
-//    FirstTeamToScoreView(match.matchid: "", match.team1Name: "Germany", match.team2Name: "Italy") {
+//    FirstTeamToScoreView(match.matchid: "", matchCardDetailVM.selectedMatchCardDetail?.team1Name: "Germany", matchCardDetailVM.selectedMatchCardDetail?.team2Name: "Italy") {
 //
 //    } teamSelected: {_,_  in
 //

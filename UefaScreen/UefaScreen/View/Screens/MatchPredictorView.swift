@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct MatchPredictorView: View {
-    
     var matchdays: [MatchDays]?
     @StateObject var viewModel = MatchPredictorVM()
-    @EnvironmentObject var sharedData: SharedData
+    @EnvironmentObject var commonData: CommonData
     
     var body: some View {
         ZStack {
@@ -19,59 +18,15 @@ struct MatchPredictorView: View {
                 VStack {
                     VStack {
                         HStack {
-                            Spacer(minLength: sharedData.orientation.isLandscape ? 50 : 0)
+                            Spacer(minLength: commonData.orientation.isLandscape ? 50 : 0)
                             ScrollViewReader { proxy in
                                 ScrollView {
                                     LazyVStack(pinnedViews: [.sectionHeaders]) {
-                                        Section(header: matchPredictorHeaderView) {
-                                            HStack(spacing:0) {
-                                                Text(matchdays?[matchdays?.firstIndex(where: { Element in Element.matchDayID == viewModel.selectedMatchDay}) ?? 0].dateRange ?? "")
-                                                    .font(.system(size: 15, weight: .bold))
-                                                Spacer()
-                                                Button (action: {
-                                                    //share button implementation
-                                                }) {
-                                                    ZStack {
-                                                        HStack {
-                                                            RoundedRectangle(cornerRadius: 25.0)
-                                                                .stroke()
-                                                                .frame(width: 85, height: 25)
-                                                        }
-                                                        
-                                                        HStack() {
-                                                            Image(systemName: "square.and.arrow.up")
-                                                                .resizable()
-                                                                .frame(width: 10, height: 13)
-                                                            Text("Share")
-                                                                .font(.footnote)
-                                                        }
-                                                    }
-                                                    
-                                                }
-                                            }
-                                            .padding(.bottom,-8)
-                                            .padding(.top,2)
-                                            .padding(.horizontal,10)
+                                        Section(header: matchPredictorHeaderView) {     //Header View
                                             
-                                            VStack(spacing:0) {
-                                                ForEach(matchdays?[matchdays?.firstIndex(where: { element in element.matchDayID == viewModel.selectedMatchDay}) ?? 0].matches ?? [], id: \.matchid)
-                                                { match in
-                                                    MatchCardView(matchCardDetail: match)
-                                                        .id(match.matchid)
-                                                        .onTapGesture {
-                                                            withAnimation {
-                                                                proxy.scrollTo(match.matchid, anchor: .center)
-                                                            }
-                                                        }
-                                                        .clipShape(RoundedRectangle(cornerRadius: 15))
-                                                        .overlay (
-                                                            RoundedRectangle(cornerRadius: 15)
-                                                                .stroke(lineWidth: 2)
-                                                                .foregroundColor(match.matchid == viewModel.boosterAppliedMatchID ? .yellow : Color.clear)
-                                                        )
-                                                        .padding(10)
-                                                }
-                                            }
+                                            dataAndShareButtonView                      //Data And Share Button View
+                                            matchPredictorMatchCardView(proxy: proxy)                 //Match Predictor MatchCard View
+                                            
                                         }
                                         .id("top")
                                     }
@@ -81,9 +36,8 @@ struct MatchPredictorView: View {
                                         }
                                     }
                                 }
-                                
                             }
-                            Spacer(minLength: sharedData.orientation.isLandscape ? 50 : 0)
+                            Spacer(minLength: commonData.orientation.isLandscape ? 50 : 0)
                         }
                         .navigationBarStyle(backgroundImage: "QSDKNavigationBG", titleColor: .white, points: matchdays?.reduce(0){$0 + ($1.points ?? 0)})
                     }
@@ -95,39 +49,16 @@ struct MatchPredictorView: View {
                 .navigationTitle("Match Predictor")
             }
             
-                        if viewModel.showFirstTeamView || viewModel.showLastFiveMatchView {
-                            Color.black.opacity(0.3)
-                                .edgesIgnoringSafeArea(.all)
-            
-                            VStack {
-                                Spacer()
-                                if let matchCardDetail = viewModel.selectedMatchCardDetail,
-                                   viewModel.showLastFiveMatchView {
-                                    VStack {
-                                        Spacer()
-                                        LastFiveMatchesView(match: matchCardDetail)
-                                            .cornerRadius(20, corners: [.topLeft, .topRight])
-                                        .animation(.easeInOut, value: viewModel.showLastFiveMatchView)
-                                    }
-                                }
-            
-                                if let matchCardDetail = viewModel.selectedMatchCardDetail,
-                                   viewModel.showFirstTeamView{
-                                    VStack {
-                                        Spacer()
-                                        FirstTeamToScoreView(match: matchCardDetail,
-                                            teamSelected: { teamName in
-                                            viewModel.storeData(matchid: matchCardDetail.matchid ?? String(), firstTeamSelected: teamName)
-                                        })
-                                        .cornerRadius(20, corners: [.topLeft, .topRight])
-            
-                                    }
-                                }
-                            }
-                            .edgesIgnoringSafeArea(.bottom)
-                            .transition(.move(edge: .bottom))
-                            .animation(.easeInOut, value: viewModel.showFirstTeamView)
-                        }
+            if viewModel.showFirstTeamView || viewModel.showLastFiveMatchView {
+                Color.black.opacity(0.3)
+                    .edgesIgnoringSafeArea(.all)
+                
+                matchPredictorScreenSheetView                                           //Match Predictor Screen Sheet View
+                
+                    .edgesIgnoringSafeArea(.bottom)
+                    .transition(.move(edge: .bottom))
+                    .animation(.easeInOut, value: viewModel.showFirstTeamView)
+            }
             
         }
         .background(Color.darkBlue000D40)
@@ -175,6 +106,87 @@ struct MatchPredictorView: View {
                 .padding(.top, 1)
         }
         .background(Color.darkBlue000D40)
+    }
+    
+    //MARK: Data And Share Button View
+    var dataAndShareButtonView: some View {
+        HStack(spacing:0) {
+            Text(matchdays?[matchdays?.firstIndex(where: { Element in Element.matchDayID == viewModel.selectedMatchDay}) ?? 0].dateRange ?? "")
+                .font(.system(size: 15, weight: .bold))
+            Spacer()
+            Button (action: {
+                //share button implementation
+            }) {
+                ZStack {
+                    HStack {
+                        RoundedRectangle(cornerRadius: 25.0)
+                            .stroke()
+                            .frame(width: 85, height: 25)
+                    }
+                    
+                    HStack() {
+                        Image(systemName: "square.and.arrow.up")
+                            .resizable()
+                            .frame(width: 10, height: 13)
+                        Text("Share")
+                            .font(.footnote)
+                    }
+                }
+                
+            }
+        }
+        .padding(.bottom,-8)
+        .padding(.top,2)
+        .padding(.horizontal,10)
+    }
+    
+    //MARK: MatchCard View
+    func matchPredictorMatchCardView(proxy: ScrollViewProxy) -> some View {
+        VStack(spacing:0) {
+            ForEach(matchdays?[matchdays?.firstIndex(where: { element in element.matchDayID == viewModel.selectedMatchDay}) ?? 0].matches ?? [], id: \.matchid)
+            { match in
+                MatchCardView(matchCardDetail: match,tapped: {
+                    withAnimation(.linear(duration: 1)) {
+                        proxy.scrollTo(match.matchid, anchor: .center)
+                    }
+                })
+                .id(match.matchid)
+                
+                    .clipShape(RoundedRectangle(cornerRadius: 15))
+                    .overlay (
+                        RoundedRectangle(cornerRadius: 15)
+                            .stroke(lineWidth: 2)
+                            .foregroundColor(match.matchid == viewModel.boosterAppliedMatchID ? .yellow : Color.clear)
+                    )
+                    .padding(10)
+            }
+        }
+    }
+    
+    //MARK: Screen Sheet View
+    var matchPredictorScreenSheetView: some View {
+        VStack {
+            Spacer()
+            if viewModel.showLastFiveMatchView {
+                VStack {
+                    Spacer()
+                    LastFiveMatchesView()
+                        .cornerRadius(20, corners: [.topLeft, .topRight])
+                        .animation(.easeInOut, value: viewModel.showLastFiveMatchView)
+                }
+            }
+            
+            if viewModel.showFirstTeamView{
+                VStack {
+                    Spacer()
+                    FirstTeamToScoreView(teamSelected: { teamName in
+                        viewModel.storeData(matchid: viewModel.selectedMatchCardDetail?.matchid ?? String(), firstTeamSelected: teamName)
+                    })
+                    .cornerRadius(20, corners: [.topLeft, .topRight])
+                    
+                }
+            }
+        }
     }
 }
 
