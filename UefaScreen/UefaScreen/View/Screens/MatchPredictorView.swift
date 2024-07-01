@@ -18,10 +18,19 @@ struct MatchPredictorView: View {
                 VStack {
                     VStack {
                         HStack {
-                            Spacer(minLength: commonData.orientation.isLandscape ? 50 : 0)
+//                            Spacer(minLength: commonData.orientation.isLandscape ? 50 : 0)
                             ScrollViewReader { proxy in
                                 ScrollView {
                                     LazyVStack(pinnedViews: [.sectionHeaders]) {
+                                        HStack {
+                                            Spacer()
+                                            Text("Place For Ads")
+                                                .font(.system(size: 12))
+                                            Spacer()
+                                        }
+                                        .frame(height: 50)
+                                        .background(Color.grey000D40)
+
                                         Section(header: matchPredictorHeaderView) {     //Header View
                                             
                                             dataAndShareButtonView                      //Data And Share Button View
@@ -32,12 +41,12 @@ struct MatchPredictorView: View {
                                     }
                                     .onChange(of: viewModel.selectedMatchDay) { _ in
                                         withAnimation() {
-                                            proxy.scrollTo("top")
+                                            proxy.scrollTo("top", anchor: .zero)
                                         }
                                     }
                                 }
                             }
-                            Spacer(minLength: commonData.orientation.isLandscape ? 50 : 0)
+//                            Spacer(minLength: commonData.orientation.isLandscape ? 50 : 0)
                         }
                         .navigationBarStyle(backgroundImage: "QSDKNavigationBG", titleColor: .white, points: matchdays?.reduce(0){$0 + ($1.points ?? 0)})
                     }
@@ -158,7 +167,9 @@ struct MatchPredictorView: View {
                             .stroke(lineWidth: 2)
                             .foregroundColor(match.matchid == viewModel.boosterAppliedMatchID ? .yellow : Color.clear)
                     )
-                    .padding(10)
+                    .padding(.vertical, 10)                    
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 100 : 10)
+                    .padding(.horizontal, (commonData.orientation.isLandscape && UIDevice.current.userInterfaceIdiom == .pad) ? 200 : 10)
             }
         }
     }
