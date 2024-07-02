@@ -25,6 +25,9 @@
 		18B2EB032C10B2E70025AF79 /* CustomKeyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B2EB022C10B2E70025AF79 /* CustomKeyboard.swift */; };
 		18B2EB072C1744950025AF79 /* FirstTeamToScoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B2EB062C1744950025AF79 /* FirstTeamToScoreView.swift */; };
 		18B2EB092C1839CC0025AF79 /* LastFiveMatchesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18B2EB082C1839CC0025AF79 /* LastFiveMatchesView.swift */; };
+		18BF6CE62C32EE1C001E2E52 /* PopupHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BF6CE52C32EE1C001E2E52 /* PopupHelper.swift */; };
+		18BF6CE82C32F193001E2E52 /* ExitBottomPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BF6CE72C32F193001E2E52 /* ExitBottomPopup.swift */; };
+		18BF6CEA2C33FFA3001E2E52 /* DragTrial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18BF6CE92C33FFA3001E2E52 /* DragTrial.swift */; };
 		18C4A4D62C201E7E00884EBB /* MatchCardVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C4A4D52C201E7E00884EBB /* MatchCardVM.swift */; };
 		18C4A4DB2C2027BF00884EBB /* MatchDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C4A4DA2C2027BF00884EBB /* MatchDay.swift */; };
 		18C4A4DD2C20288600884EBB /* MatchPredictorVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C4A4DC2C20288600884EBB /* MatchPredictorVM.swift */; };
@@ -53,6 +56,9 @@
 		18B2EB022C10B2E70025AF79 /* CustomKeyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomKeyboard.swift; sourceTree = "<group>"; };
 		18B2EB062C1744950025AF79 /* FirstTeamToScoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirstTeamToScoreView.swift; sourceTree = "<group>"; };
 		18B2EB082C1839CC0025AF79 /* LastFiveMatchesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastFiveMatchesView.swift; sourceTree = "<group>"; };
+		18BF6CE52C32EE1C001E2E52 /* PopupHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupHelper.swift; sourceTree = "<group>"; };
+		18BF6CE72C32F193001E2E52 /* ExitBottomPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExitBottomPopup.swift; sourceTree = "<group>"; };
+		18BF6CE92C33FFA3001E2E52 /* DragTrial.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DragTrial.swift; sourceTree = "<group>"; };
 		18C4A4D52C201E7E00884EBB /* MatchCardVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchCardVM.swift; sourceTree = "<group>"; };
 		18C4A4DA2C2027BF00884EBB /* MatchDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchDay.swift; sourceTree = "<group>"; };
 		18C4A4DC2C20288600884EBB /* MatchPredictorVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchPredictorVM.swift; sourceTree = "<group>"; };
@@ -145,7 +151,9 @@
 			children = (
 				18B2EAFE2C0F3F300025AF79 /* MatchCardView.swift */,
 				18B2EB022C10B2E70025AF79 /* CustomKeyboard.swift */,
+				18BF6CE92C33FFA3001E2E52 /* DragTrial.swift */,
 				18B2EB062C1744950025AF79 /* FirstTeamToScoreView.swift */,
+				18BF6CE72C32F193001E2E52 /* ExitBottomPopup.swift */,
 				18B2EB082C1839CC0025AF79 /* LastFiveMatchesView.swift */,
 			);
 			path = "Custom Views";
@@ -192,6 +200,7 @@
 		18C4A4DE2C206AAD00884EBB /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				18BF6CE52C32EE1C001E2E52 /* PopupHelper.swift */,
 				18C4A4DF2C206ACC00884EBB /* TextFieldFocusedState.swift */,
 				1851CC9D2C23097800FFB3F0 /* RoundedCorner.swift */,
 				189F04402C2D658200EFD300 /* DeviceRotationViewModifier.swift */,
@@ -279,9 +288,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				18BF6CE62C32EE1C001E2E52 /* PopupHelper.swift in Sources */,
 				18C4A4DB2C2027BF00884EBB /* MatchDay.swift in Sources */,
 				18B2EAFA2C0F27EA0025AF79 /* MatchPredictorView.swift in Sources */,
 				189F04412C2D658200EFD300 /* DeviceRotationViewModifier.swift in Sources */,
+				18BF6CEA2C33FFA3001E2E52 /* DragTrial.swift in Sources */,
+				18BF6CE82C32F193001E2E52 /* ExitBottomPopup.swift in Sources */,
 				18C612FF2C24718C002D1B4C /* ModelData.swift in Sources */,
 				18C4A4E02C206ACC00884EBB /* TextFieldFocusedState.swift in Sources */,
 				18B2EAEF2C0DB5950025AF79 /* ButtonHorizontalAndColored.swift in Sources */,

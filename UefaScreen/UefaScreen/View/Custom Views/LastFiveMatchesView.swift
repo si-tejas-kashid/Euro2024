@@ -21,8 +21,8 @@ struct LastFiveMatchesView: View {
         .onAppear {
             isSelected = matchDetailVM.selectedMatchCardDetail?.team1Name
         }
-        .background(Color.blue0D1E62)
-        .foregroundColor(.white)
+        .background(matchDetailVM.fromIpad ? Color.whiteF4F3F5 : Color.blue0D1E62)
+        .foregroundColor(matchDetailVM.fromIpad ? Color.grey000D40 : Color.white)
     }
     
     
@@ -39,8 +39,19 @@ struct LastFiveMatchesView: View {
                     matchDetailVM.selectedMatchCardDetail = nil
                 }
             }) {
-                Image(systemName: "xmark")
-                    .opacity(0.6)
+                ZStack {
+                    if matchDetailVM.fromIpad{
+                        Circle()
+                            .fill()
+                            .foregroundColor(Color.white)
+                            .frame(width: 22)
+                    }
+                    Image(systemName: "xmark")
+                        .opacity(0.6)
+                        .font(.system(size: matchDetailVM.fromIpad ? 10 : 15, weight: matchDetailVM.fromIpad ? .bold : .medium))
+                        .padding(matchDetailVM.fromIpad ? 5 : 0)                    
+                }
+                
             }
         }
         .padding(.horizontal,15)
@@ -69,7 +80,9 @@ struct LastFiveMatchesView: View {
                 }
                 
                 Rectangle()
-                    .foregroundColor(isSelected == matchDetailVM.selectedMatchCardDetail?.team1Name ? .yellow : .white.opacity(0.2))
+                    .foregroundColor(isSelected == matchDetailVM.selectedMatchCardDetail?.team1Name
+                                     ? matchDetailVM.fromIpad ? Color.black : Color.yellow
+                                     : matchDetailVM.fromIpad ? Color.greyB2C0C3 : .white.opacity(0.2))
                     .frame(height: 2)
             }
             .padding(.trailing,-4.5)
@@ -92,7 +105,9 @@ struct LastFiveMatchesView: View {
                     isSelected = matchDetailVM.selectedMatchCardDetail?.team2Name
                 }
                 Rectangle()
-                    .foregroundColor(isSelected == matchDetailVM.selectedMatchCardDetail?.team2Name ? .yellow : .white.opacity(0.2))
+                    .foregroundColor(isSelected == matchDetailVM.selectedMatchCardDetail?.team2Name
+                                     ? matchDetailVM.fromIpad ? Color.black : Color.yellow
+                                     : matchDetailVM.fromIpad ? Color.greyB2C0C3 : Color.white.opacity(0.2))
                     .frame(height: 2)
             }
             .padding(.leading,-4.5)
@@ -113,7 +128,7 @@ struct LastFiveMatchesView: View {
                             Text("W")
                                 .font(.system(size: 12))
                                 .padding(8)
-                                .foregroundColor(.white)
+                                .foregroundColor(matchDetailVM.fromIpad ? Color.black : Color.white)
                             
                         }
                         Spacer()
@@ -139,7 +154,7 @@ struct LastFiveMatchesView: View {
                             Text("Friendly Matches")
                         }
                         .font(.system(size: 12))
-                        .foregroundColor(.white.opacity(0.8))
+                        .foregroundColor(matchDetailVM.fromIpad ? Color.black : Color.white.opacity(0.8))
                     }
                     Spacer()
                 }

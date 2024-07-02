@@ -33,8 +33,8 @@ struct FirstTeamToScoreView: View {
             isSelected = matchCardDetailVM.getSelectedTeamByDefault(matchID: matchCardDetailVM.selectedMatchCardDetail?.matchid ?? String())
         }
         .cornerRadius(20)
-        .background(Color.blue0D1E62)
-        .foregroundColor(.white)
+        .background(matchCardDetailVM.fromIpad ? Color.whiteF4F3F5 : Color.blue0D1E62)
+        .foregroundColor(matchCardDetailVM.fromIpad ? Color.grey000D40 : Color.white)
     }
     
     //MARK: Header View
@@ -63,9 +63,19 @@ struct FirstTeamToScoreView: View {
                     Button(action: {
                         matchCardDetailVM.onDismiss()
                     }) {
-                        Image(systemName: "xmark")
-                            .accentColor(.white)
-                            .opacity(0.6)
+                        ZStack {
+                            if matchCardDetailVM.fromIpad{
+                                Circle()
+                                    .fill()
+                                    .foregroundColor(Color.white)
+                                    .frame(width: 22)
+                            }
+                            Image(systemName: "xmark")
+                                .opacity(0.6)
+                                .font(.system(size: matchCardDetailVM.fromIpad ? 10 : 15, weight: matchCardDetailVM.fromIpad ? .bold : .medium))
+                                .padding(matchCardDetailVM.fromIpad ? 5 : 0)
+                        }
+                        
                     }
                     .padding(.trailing,15)
                     .padding(.top,-15)
@@ -108,12 +118,22 @@ struct FirstTeamToScoreView: View {
                                     .background(Color.clear)
                                     .foregroundColor(Color.greyB2C0C3)
                             )
-                        
-                        Image(systemName: isSelected == teamName ? "checkmark.circle.fill" : "circle")
-                            .background(Color.blue0D1E62)
-                            .foregroundColor(isSelected == teamName ? .yellow : .white.opacity(0.8))
-                            .frame(width: 20, height: 20)
-                            .clipShape(Circle())
+                        ZStack {
+                            Image(systemName: isSelected == teamName ? "checkmark.circle.fill" : "circle")
+    //                            .accentColor(.blue)
+                                .background(matchCardDetailVM.fromIpad ? Color.white : Color.blue0D1E62)
+                                .foregroundColor(isSelected == teamName ? .yellow : .white.opacity(0.8))
+                                .frame(width: 20, height: 20)
+                                .clipShape(Circle())
+                                .padding(-5)
+                            
+                            if matchCardDetailVM.fromIpad {
+                                Circle()
+                                    .stroke(lineWidth: 2)
+                                    .frame(width: 20, height: 20)
+                                    .foregroundColor(Color.greyB2C0C3)
+                            }
+                        }
                     }
                 }
             }

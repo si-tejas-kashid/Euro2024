@@ -19,6 +19,7 @@ final class MatchPredictorVM: ObservableObject {
     @Published var showLastFiveMatchView: Bool = false
     @Published var selectedMatchCardDetail: Match? = nil
     @Published var orientation: UIDeviceOrientation = UIDeviceOrientation.portrait
+    @Published var fromIpad: Bool = UIDevice.current.userInterfaceIdiom == .pad
     
     //MARK: Arrays
     @Published var matchCardDetail: MatchCard = MatchCard()
@@ -82,7 +83,8 @@ final class MatchPredictorVM: ObservableObject {
     //MARK: Sheets View Functions and Closures
     
     func onDismiss() -> () {
-        withAnimation(.easeInOut(duration: 0.5)) {
+        withAnimation(.easeInOut(duration: 1)) {
+            showLastFiveMatchView = false
             showFirstTeamView = false
             selectedMatchCardDetail = nil
         }

@@ -28,16 +28,16 @@ struct MatchPredictorView: View {
                                                 .font(.system(size: 12))
                                             Spacer()
                                         }
+                                        .id("top")
                                         .frame(height: 50)
                                         .background(Color.grey000D40)
 
                                         Section(header: matchPredictorHeaderView) {     //Header View
                                             
                                             dataAndShareButtonView                      //Data And Share Button View
-                                            matchPredictorMatchCardView(proxy: proxy)                 //Match Predictor MatchCard View
+                                            matchPredictorMatchCardView(proxy: proxy)   //Match Predictor MatchCard View
                                             
                                         }
-                                        .id("top")
                                     }
                                     .onChange(of: viewModel.selectedMatchDay) { _ in
                                         withAnimation() {
@@ -58,17 +58,15 @@ struct MatchPredictorView: View {
                 .navigationTitle("Match Predictor")
             }
             
-            if viewModel.showFirstTeamView || viewModel.showLastFiveMatchView {
-                Color.black.opacity(0.3)
-                    .edgesIgnoringSafeArea(.all)
-                
-                matchPredictorScreenSheetView                                           //Match Predictor Screen Sheet View
-                
-                    .edgesIgnoringSafeArea(.bottom)
-                    .transition(.move(edge: .bottom))
-                    .animation(.easeInOut, value: viewModel.showFirstTeamView)
+            .popup(isPresented: Binding.constant(viewModel.showLastFiveMatchView), dragToDismiss: true) {
+                lastFiveMatchesSheetView(fromIpad: UIDevice.current.userInterfaceIdiom == .pad)
             }
+            .ignoresSafeArea(.all)
             
+            .popup(isPresented: Binding.constant(viewModel.showFirstTeamView), dragToDismiss: true) {
+                firstTeamToScoreSheetView(fromIpad: UIDevice.current.userInterfaceIdiom == .pad)
+            }
+            .ignoresSafeArea(.all)
         }
         .background(Color.darkBlue000D40)
         .navigationViewStyle(.stack)
@@ -167,38 +165,72 @@ struct MatchPredictorView: View {
                             .stroke(lineWidth: 2)
                             .foregroundColor(match.matchid == viewModel.boosterAppliedMatchID ? .yellow : Color.clear)
                     )
-                    .padding(.vertical, 10)                    
-                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 100 : 10)
+                    .padding(.vertical, 10)
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 200 : 0)
                     .padding(.horizontal, (commonData.orientation.isLandscape && UIDevice.current.userInterfaceIdiom == .pad) ? 200 : 10)
             }
         }
     }
     
     //MARK: Screen Sheet View
-    var matchPredictorScreenSheetView: some View {
-        VStack {
-            Spacer()
-            if viewModel.showLastFiveMatchView {
-                VStack {
+    
+    func firstTeamToScoreSheetView(fromIpad: Bool) -> some View {
+        ZStack {
+            Color.black.opacity(0.1)
+            VStack {
+                if !fromIpad {
                     Spacer()
-                    LastFiveMatchesView()
-                        .cornerRadius(20, corners: [.topLeft, .topRight])
-                        .animation(.easeInOut, value: viewModel.showLastFiveMatchView)
                 }
-            }
-            
-            if viewModel.showFirstTeamView{
-                VStack {
-                    Spacer()
-                    FirstTeamToScoreView(teamSelected: { teamName in
+                FirstTeamToScoreView(teamSelected: { teamName in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         viewModel.storeData(matchid: viewModel.selectedMatchCardDetail?.matchid ?? String(), firstTeamSelected: teamName)
-                    })
-                    .cornerRadius(20, corners: [.topLeft, .topRight])
-                    
-                }
+                    }
+                })
+                .cornerRadius(30)
+                .padding(fromIpad ? 50 : 0)
+                .padding(.horizontal, (commonData.orientation.isLandscape && UIDevice.current.userInterfaceIdiom == .pad) ? 200 : 0)
             }
         }
+        .shadow(color: Color.black.opacity(1),
+                radius: 25)
+        .gesture(
+            DragGesture()
+                .onEnded({ value in
+                    print("End value",value)
+                    if value.location.x > 200 {
+                        viewModel.onDismiss()
+                    }
+                })
+        )
     }
+    
+    func lastFiveMatchesSheetView(fromIpad: Bool) -> some View {
+        ZStack {
+            Color.black.opacity(0.1)
+            VStack {
+                if !fromIpad {
+                    Spacer()
+                }
+                LastFiveMatchesView()
+                    .cornerRadius(30)
+                    .padding(fromIpad ? 50 : 0)
+                    .padding(.horizontal, (commonData.orientation.isLandscape && UIDevice.current.userInterfaceIdiom == .pad) ? 200 : 0)
+                    .shadow(color: Color.black.opacity(1),
+                            radius: 25)
+            }
+        }
+        .gesture(
+            DragGesture()
+                .onEnded({ value in
+                    print("End value",value)
+                    if value.location.x > 200 {
+                        viewModel.onDismiss()
+                        
+                    }
+                })
+        )
+    }
+    
 }
 
 //#Preview {
