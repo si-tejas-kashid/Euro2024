@@ -121,7 +121,9 @@ struct FirstTeamToScoreView: View {
                         ZStack {
                             Image(systemName: isSelected == teamName ? "checkmark.circle.fill" : "circle")
     //                            .accentColor(.blue)
-                                .background(matchCardDetailVM.fromIpad ? Color.white : Color.blue0D1E62)
+                                .background(matchCardDetailVM.fromIpad 
+                                            ? isSelected == teamName ? Color.black : Color.white
+                                            : Color.blue0D1E62)
                                 .foregroundColor(isSelected == teamName ? .yellow : .white.opacity(0.8))
                                 .frame(width: 20, height: 20)
                                 .clipShape(Circle())

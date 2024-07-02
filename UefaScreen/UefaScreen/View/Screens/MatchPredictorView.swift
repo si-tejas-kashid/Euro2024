@@ -166,8 +166,8 @@ struct MatchPredictorView: View {
                             .foregroundColor(match.matchid == viewModel.boosterAppliedMatchID ? .yellow : Color.clear)
                     )
                     .padding(.vertical, 10)
-                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 200 : 0)
-                    .padding(.horizontal, (commonData.orientation.isLandscape && UIDevice.current.userInterfaceIdiom == .pad) ? 200 : 10)
+                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 150 : 0)
+                    .padding(.horizontal, (commonData.orientation.isLandscape && UIDevice.current.userInterfaceIdiom == .pad) ? 150 : 10)
             }
         }
     }
@@ -187,7 +187,7 @@ struct MatchPredictorView: View {
                     }
                 })
                 .cornerRadius(30)
-                .padding(fromIpad ? 50 : 0)
+                .padding(fromIpad ? 150 : 0)
                 .padding(.horizontal, (commonData.orientation.isLandscape && UIDevice.current.userInterfaceIdiom == .pad) ? 200 : 0)
             }
         }
@@ -213,7 +213,7 @@ struct MatchPredictorView: View {
                 }
                 LastFiveMatchesView()
                     .cornerRadius(30)
-                    .padding(fromIpad ? 50 : 0)
+                    .padding(fromIpad ? 150 : 0)
                     .padding(.horizontal, (commonData.orientation.isLandscape && UIDevice.current.userInterfaceIdiom == .pad) ? 200 : 0)
                     .shadow(color: Color.black.opacity(1),
                             radius: 25)
