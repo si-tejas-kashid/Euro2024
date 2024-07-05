@@ -72,9 +72,11 @@ struct CreateEmployeeView: View {
                     .bold()
                 TextField(" Enter salary", text: $employeeSalary)
                     .background(Color.white)
-                    .foregroundColor(.blue)
+                    .foregroundColor(Color.black)
                     .cornerRadius(4.0)
-                    .multilineTextAlignment(.center)
+                    .multilineTextAlignment(.center)                    
+                    .keyboardType(.numberPad)
+                
             }
             
             HStack(spacing:25) {
@@ -82,9 +84,10 @@ struct CreateEmployeeView: View {
                     .bold()
                 TextField(" Enter age", text: $employeeAge)
                     .background(Color.white)
-                    .foregroundColor(.blue)
+                    .foregroundColor(Color.black)
                     .cornerRadius(4.0)
                     .multilineTextAlignment(.center)
+                    .keyboardType(.numberPad)
             }
             
             Button(action: {

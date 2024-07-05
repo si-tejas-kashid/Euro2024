@@ -18,7 +18,8 @@ enum ServiceHeaderType: String {
             return [:]
         case .DEFAULT:
             if url.contains("/services") { return [:] }
-            return ["Accept" : "application/json"]
+            return ["Accept" : "application/json",
+            "content-type" : "application/json"]
         }
     }
 }

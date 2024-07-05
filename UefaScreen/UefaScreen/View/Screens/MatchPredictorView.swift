@@ -65,7 +65,7 @@ struct MatchPredictorView: View {
             .ignoresSafeArea(.all)
             
             .onAppear {
-//                viewModel.getEmployeeData()
+                viewModel.getEmployeeData()
             }
             
         }
@@ -180,7 +180,9 @@ struct MatchPredictorView: View {
                 ForEach(viewModel.employeesData, id: \.id) {employee in
                     EmployeeDetailView(employeeDetail: employee)
                         .cornerRadius(15)
-                        .padding(10)
+                        .padding(.vertical, 10)
+                        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 150 : 0)
+                        .padding(.horizontal, (commonData.orientation.isLandscape && UIDevice.current.userInterfaceIdiom == .pad) ? 150 : 10)
                 }
                 
                 Button(action: {
@@ -221,9 +223,7 @@ struct MatchPredictorView: View {
                         LastFiveMatchesView()
                     } else if viewModel.showAddEmployeeView {
                         CreateEmployeeView(submitDetail: ({details in
-                            Task {
-                                await viewModel.setEmployeeData(with: details)
-                            }
+                                viewModel.setEmployeeData(with: details)
                         })
                     )}
                 }

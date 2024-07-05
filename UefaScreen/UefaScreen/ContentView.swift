@@ -17,9 +17,7 @@ struct ContentView: View {
             }
             .onRotate { UIDeviceOrientation in
                 sharedData.orientation = UIDeviceOrientation
-            }
-        
-//        CreateEmployeeView()
+            }        
     }
 }
 

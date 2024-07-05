@@ -131,12 +131,11 @@ final class MatchPredictorVM: ObservableObject {
         }
     }
     
-    @MainActor
-    func setEmployeeData(with employeeRequestDetails: EmployeeRequestModel) async {
-//        let request: EmployeeRequestModel = employeeRequestDetails
- 
+    func setEmployeeData(with employeeRequestDetails: EmployeeRequestModel)  {
+        let request: EmployeeRequestModel = employeeRequestDetails
+        Task{
             do{
-                let requestData = try employeeRequestDetails.encodeJSON()
+                let requestData = try request.encodeJSON()
                 let createEmployeeURN = CreateEmployeeURN(body: requestData)
                 let data = try await apiService.execute(with: createEmployeeURN)
                 if data.status.lowercased() == "success" {
@@ -152,8 +151,7 @@ final class MatchPredictorVM: ObservableObject {
             } catch {
                 print(error)
             }
-        
-        
+        }
     }
     
 }

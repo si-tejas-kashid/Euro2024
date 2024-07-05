@@ -23,7 +23,7 @@ class ServiceManager: NetworkServiceProvider {
         do {
             let request = try urnType.getURLRequest()
             let (data, response) = try await session.data(for: request)
-             printData(data: data)
+//             printData(data: data)
             try validateResponse(for: response, data: data)
             let decodedData = try decodeResponse(for: urnType, from: data)
             if request.httpMethod == HTTPMethodType.post.rawValue {
