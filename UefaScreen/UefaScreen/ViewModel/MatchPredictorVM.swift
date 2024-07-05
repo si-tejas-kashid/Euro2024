@@ -17,6 +17,7 @@ final class MatchPredictorVM: ObservableObject {
     @Published var boosterAppliedMatchID: String?
     @Published var showFirstTeamView: Bool = false
     @Published var showLastFiveMatchView: Bool = false
+    @Published var showAddEmployeeView: Bool = false
     @Published var selectedMatchCardDetail: Match? = nil
     @Published var orientation: UIDeviceOrientation = UIDeviceOrientation.portrait
     @Published var fromIpad: Bool = UIDevice.current.userInterfaceIdiom == .pad
@@ -25,7 +26,9 @@ final class MatchPredictorVM: ObservableObject {
     @Published var matchCardDetail: MatchCard = MatchCard()
     @Published var allMatchDaysArr: [MatchDays] = allMatches
     @Published var matchCardStorage: [MatchCardStorageModel] = []
+    @Published var employeesData: [EmployeeData] = []
     
+    let apiService = ServiceManager()
     //MARK: Functions
     
     func storeData(matchid: String, team1Prediction: String = String(), team2Prediction: String = String(), firstTeamSelected: String = String()) {
@@ -86,6 +89,7 @@ final class MatchPredictorVM: ObservableObject {
         withAnimation(.easeInOut(duration: 1)) {
             showLastFiveMatchView = false
             showFirstTeamView = false
+            showAddEmployeeView = false
             selectedMatchCardDetail = nil
         }
     }
@@ -101,6 +105,55 @@ final class MatchPredictorVM: ObservableObject {
         } else {
             return String()
         }
+    }
+    
+    //MARK: API Calls for Employee data
+    
+    func getEmployeeData() {
+        Task{
+            do {
+                let data = try await apiService.execute(with: EmployeesURN())
+                
+                data.data?.forEach({ employee in
+                    let newEmployee = EmployeeData(
+                        id: employee.id,
+                        employeeName: employee.employeeName,
+                        employeeSalary: employee.employeeSalary,
+                        employeeAge: employee.employeeAge,
+                        profileImage: employee.profileImage)
+                    
+                    employeesData.append(newEmployee)
+                })
+                
+            } catch {
+                print(error)
+            }
+        }
+    }
+    
+    @MainActor
+    func setEmployeeData(with employeeRequestDetails: EmployeeRequestModel) async {
+//        let request: EmployeeRequestModel = employeeRequestDetails
+ 
+            do{
+                let requestData = try employeeRequestDetails.encodeJSON()
+                let createEmployeeURN = CreateEmployeeURN(body: requestData)
+                let data = try await apiService.execute(with: createEmployeeURN)
+                if data.status.lowercased() == "success" {
+                    let newEmployee = EmployeeData(id: data.data.id,
+                                                   employeeName: data.data.name,
+                                                   employeeSalary: data.data.salary,
+                                                   employeeAge: data.data.age,
+                                                   profileImage: String())
+                    
+                    employeesData.append(newEmployee)
+                    showAddEmployeeView = false
+                }
+            } catch {
+                print(error)
+            }
+        
+        
     }
     
 }

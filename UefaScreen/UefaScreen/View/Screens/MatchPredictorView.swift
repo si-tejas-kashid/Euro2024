@@ -17,7 +17,7 @@ struct MatchPredictorView: View {
             NavigationView {
                 VStack {
                     VStack {
-                        HStack {
+//                        HStack {
 //                            Spacer(minLength: commonData.orientation.isLandscape ? 50 : 0)
                             ScrollViewReader { proxy in
                                 ScrollView {
@@ -36,6 +36,7 @@ struct MatchPredictorView: View {
                                             
                                             dataAndShareButtonView                      //Data And Share Button View
                                             matchPredictorMatchCardView(proxy: proxy)   //Match Predictor MatchCard View
+                                            employeeDetailsView                         //Employee Details View
                                             
                                         }
                                     }
@@ -47,7 +48,7 @@ struct MatchPredictorView: View {
                                 }
                             }
 //                            Spacer(minLength: commonData.orientation.isLandscape ? 50 : 0)
-                        }
+//                        }
                         .navigationBarStyle(backgroundImage: "QSDKNavigationBG", titleColor: .white, points: matchdays?.reduce(0){$0 + ($1.points ?? 0)})
                     }
                 }
@@ -58,15 +59,15 @@ struct MatchPredictorView: View {
                 .navigationTitle("Match Predictor")
             }
             
-            .popup(isPresented: Binding.constant(viewModel.showLastFiveMatchView), dragToDismiss: true) {
-                lastFiveMatchesSheetView(fromIpad: UIDevice.current.userInterfaceIdiom == .pad)
+            .popup(isPresented: Binding.constant(viewModel.showFirstTeamView || viewModel.showLastFiveMatchView || viewModel.showAddEmployeeView), dragToDismiss: true) {
+                matchPredictorCommonSheetView
             }
             .ignoresSafeArea(.all)
             
-            .popup(isPresented: Binding.constant(viewModel.showFirstTeamView), dragToDismiss: true) {
-                firstTeamToScoreSheetView(fromIpad: UIDevice.current.userInterfaceIdiom == .pad)
+            .onAppear {
+//                viewModel.getEmployeeData()
             }
-            .ignoresSafeArea(.all)
+            
         }
         .background(Color.darkBlue000D40)
         .navigationViewStyle(.stack)
@@ -172,22 +173,62 @@ struct MatchPredictorView: View {
         }
     }
     
+    //MARK: Employee Details View
+    var employeeDetailsView: some View {
+        LazyVStack {
+            if viewModel.selectedMatchDay == matchdays?.first?.matchDayID {
+                ForEach(viewModel.employeesData, id: \.id) {employee in
+                    EmployeeDetailView(employeeDetail: employee)
+                        .cornerRadius(15)
+                        .padding(10)
+                }
+                
+                Button(action: {
+                    viewModel.showAddEmployeeView = true
+                }) {
+                    Text("Add Employee")
+                        .padding(5)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 5.0)
+                                .stroke()
+                        )
+                }
+                .padding(.bottom, 20)
+            }
+            
+            
+        }
+    }
+    
     //MARK: Screen Sheet View
     
-    func firstTeamToScoreSheetView(fromIpad: Bool) -> some View {
+    var matchPredictorCommonSheetView: some View {
         ZStack {
             Color.black.opacity(0.1)
             VStack {
-                if !fromIpad {
+                if !viewModel.fromIpad {
                     Spacer()
                 }
-                FirstTeamToScoreView(teamSelected: { teamName in
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        viewModel.storeData(matchid: viewModel.selectedMatchCardDetail?.matchid ?? String(), firstTeamSelected: teamName)
-                    }
-                })
+                VStack{
+                    if viewModel.showFirstTeamView {
+                        FirstTeamToScoreView(teamSelected: { teamName in
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                viewModel.storeData(matchid: viewModel.selectedMatchCardDetail?.matchid ?? String(), firstTeamSelected: teamName)
+                            }
+                        })
+                        
+                    } else if viewModel.showLastFiveMatchView {
+                        LastFiveMatchesView()
+                    } else if viewModel.showAddEmployeeView {
+                        CreateEmployeeView(submitDetail: ({details in
+                            Task {
+                                await viewModel.setEmployeeData(with: details)
+                            }
+                        })
+                    )}
+                }
                 .cornerRadius(30)
-                .padding(fromIpad ? 150 : 0)
+                .padding(viewModel.fromIpad ? 150 : 0)
                 .padding(.horizontal, (commonData.orientation.isLandscape && UIDevice.current.userInterfaceIdiom == .pad) ? 200 : 0)
             }
         }
@@ -196,41 +237,12 @@ struct MatchPredictorView: View {
         .gesture(
             DragGesture()
                 .onEnded({ value in
-                    print("End value",value)
                     if value.location.x > 200 {
                         viewModel.onDismiss()
                     }
                 })
         )
     }
-    
-    func lastFiveMatchesSheetView(fromIpad: Bool) -> some View {
-        ZStack {
-            Color.black.opacity(0.1)
-            VStack {
-                if !fromIpad {
-                    Spacer()
-                }
-                LastFiveMatchesView()
-                    .cornerRadius(30)
-                    .padding(fromIpad ? 150 : 0)
-                    .padding(.horizontal, (commonData.orientation.isLandscape && UIDevice.current.userInterfaceIdiom == .pad) ? 200 : 0)
-                    .shadow(color: Color.black.opacity(1),
-                            radius: 25)
-            }
-        }
-        .gesture(
-            DragGesture()
-                .onEnded({ value in
-                    print("End value",value)
-                    if value.location.x > 200 {
-                        viewModel.onDismiss()
-                        
-                    }
-                })
-        )
-    }
-    
 }
 
 //#Preview {

@@ -66,6 +66,6 @@ struct ShareLeagueView: View {
     }
 }
 
-#Preview {
-    ShareLeagueView()
-}
+//#Preview {
+//    ShareLeagueView()
+//}
