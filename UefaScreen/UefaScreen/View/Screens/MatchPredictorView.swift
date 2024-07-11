@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct MatchPredictorView: View {
-    var matchdays: [MatchDays]?
     @StateObject var viewModel = MatchPredictorVM()
     @EnvironmentObject var commonData: CommonData
     
@@ -49,7 +48,7 @@ struct MatchPredictorView: View {
                             }
 //                            Spacer(minLength: commonData.orientation.isLandscape ? 50 : 0)
 //                        }
-                        .navigationBarStyle(backgroundImage: "QSDKNavigationBG", titleColor: .white, points: matchdays?.reduce(0){$0 + ($1.points ?? 0)})
+                            .navigationBarStyle(backgroundImage: "QSDKNavigationBG", titleColor: .white, points: viewModel.allMatchDaysArr.reduce(0){$0 + ($1.points ?? 0)})
                     }
                 }
                 .foregroundColor(.white)
@@ -80,7 +79,7 @@ struct MatchPredictorView: View {
         VStack(spacing: 0) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(matchdays ?? [], id: \.matchDayID){ data in
+                    ForEach(viewModel.allMatchDaysArr, id: \.matchDayID){ data in
                         Button(action: {
                             viewModel.selectedMatchDay = data.matchDayID
                         })
@@ -104,7 +103,7 @@ struct MatchPredictorView: View {
                     Spacer()
                 }
                 .onAppear{
-                    viewModel.selectedMatchDay = matchdays?.first?.matchDayID
+                    viewModel.selectedMatchDay = viewModel.allMatchDaysArr.first?.matchDayID
                 }
                 .padding(.leading,20)
             }
@@ -119,7 +118,7 @@ struct MatchPredictorView: View {
     //MARK: Data And Share Button View
     var dataAndShareButtonView: some View {
         HStack(spacing:0) {
-            Text(matchdays?[matchdays?.firstIndex(where: { Element in Element.matchDayID == viewModel.selectedMatchDay}) ?? 0].dateRange ?? "")
+            Text(viewModel.allMatchDaysArr[viewModel.allMatchDaysArr.firstIndex(where: { Element in Element.matchDayID == viewModel.selectedMatchDay}) ?? 0].dateRange ?? "")
                 .font(.system(size: 15, weight: .bold))
             Spacer()
             Button (action: {
@@ -151,7 +150,7 @@ struct MatchPredictorView: View {
     //MARK: MatchCard View
     func matchPredictorMatchCardView(proxy: ScrollViewProxy) -> some View {
         VStack(spacing:0) {
-            ForEach(matchdays?[matchdays?.firstIndex(where: { element in element.matchDayID == viewModel.selectedMatchDay}) ?? 0].matches ?? [], id: \.matchid)
+            ForEach(viewModel.allMatchDaysArr[viewModel.allMatchDaysArr.firstIndex(where: { element in element.matchDayID == viewModel.selectedMatchDay}) ?? 0].matches ?? [], id: \.matchid)
             { match in
                 MatchCardView(matchCardDetail: match,tapped: {
                     withAnimation(.linear(duration: 1)) {
@@ -176,7 +175,7 @@ struct MatchPredictorView: View {
     //MARK: Employee Details View
     var employeeDetailsView: some View {
         LazyVStack {
-            if viewModel.selectedMatchDay == matchdays?.first?.matchDayID {
+            if viewModel.selectedMatchDay == viewModel.allMatchDaysArr.first?.matchDayID {
                 ForEach(viewModel.employeesData, id: \.id) {employee in
                     EmployeeDetailView(employeeDetail: employee)
                         .cornerRadius(15)
@@ -246,6 +245,6 @@ struct MatchPredictorView: View {
 }
 
 //#Preview {
-//    MatchPredictorView(matchdays: allMatches)
+//    MatchPredictorView(viewModel.allMatchDaysArr: allMatches)
 //        .environmentObject(SharedData())
 //}

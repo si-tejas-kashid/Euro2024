@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1807D6F32C3C4D5F0075A3A5 /* UefaScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1807D6F22C3C4D5F0075A3A5 /* UefaScreenTests.swift */; };
 		1851CC9E2C23097800FFB3F0 /* RoundedCorner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1851CC9D2C23097800FFB3F0 /* RoundedCorner.swift */; };
 		189727A52C2612B400534683 /* CommonData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189727A42C2612B400534683 /* CommonData.swift */; };
 		189F04412C2D658200EFD300 /* DeviceRotationViewModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 189F04402C2D658200EFD300 /* DeviceRotationViewModifier.swift */; };
@@ -48,7 +49,32 @@
 		18C612FF2C24718C002D1B4C /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C612FE2C24718C002D1B4C /* ModelData.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		1807D6F42C3C4D5F0075A3A5 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 18B2EAD12C09EB650025AF79 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 18B2EAD82C09EB650025AF79;
+			remoteInfo = UefaScreen;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		1807D6E72C3C417E0075A3A5 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		1807D6F02C3C4D5F0075A3A5 /* UefaScreenTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = UefaScreenTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		1807D6F22C3C4D5F0075A3A5 /* UefaScreenTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UefaScreenTests.swift; sourceTree = "<group>"; };
 		1851CC9D2C23097800FFB3F0 /* RoundedCorner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedCorner.swift; sourceTree = "<group>"; };
 		189727A42C2612B400534683 /* CommonData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonData.swift; sourceTree = "<group>"; };
 		189F04402C2D658200EFD300 /* DeviceRotationViewModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceRotationViewModifier.swift; sourceTree = "<group>"; };
@@ -92,6 +118,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		1807D6ED2C3C4D5F0075A3A5 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		18B2EAD62C09EB650025AF79 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -102,11 +135,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1807D6E32C3C417E0075A3A5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		1807D6F12C3C4D5F0075A3A5 /* UefaScreenTests */ = {
+			isa = PBXGroup;
+			children = (
+				1807D6F22C3C4D5F0075A3A5 /* UefaScreenTests.swift */,
+			);
+			path = UefaScreenTests;
+			sourceTree = "<group>";
+		};
 		18B2EAD02C09EB650025AF79 = {
 			isa = PBXGroup;
 			children = (
 				18B2EADB2C09EB650025AF79 /* UefaScreen */,
+				1807D6F12C3C4D5F0075A3A5 /* UefaScreenTests */,
 				18B2EADA2C09EB650025AF79 /* Products */,
+				1807D6E32C3C417E0075A3A5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -114,6 +164,7 @@
 			isa = PBXGroup;
 			children = (
 				18B2EAD92C09EB650025AF79 /* UefaScreen.app */,
+				1807D6F02C3C4D5F0075A3A5 /* UefaScreenTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -295,6 +346,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		1807D6EF2C3C4D5F0075A3A5 /* UefaScreenTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1807D6F62C3C4D5F0075A3A5 /* Build configuration list for PBXNativeTarget "UefaScreenTests" */;
+			buildPhases = (
+				1807D6EC2C3C4D5F0075A3A5 /* Sources */,
+				1807D6ED2C3C4D5F0075A3A5 /* Frameworks */,
+				1807D6EE2C3C4D5F0075A3A5 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				1807D6F52C3C4D5F0075A3A5 /* PBXTargetDependency */,
+			);
+			name = UefaScreenTests;
+			productName = UefaScreenTests;
+			productReference = 1807D6F02C3C4D5F0075A3A5 /* UefaScreenTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		18B2EAD82C09EB650025AF79 /* UefaScreen */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 18B2EAE72C09EB670025AF79 /* Build configuration list for PBXNativeTarget "UefaScreen" */;
@@ -302,6 +371,7 @@
 				18B2EAD52C09EB650025AF79 /* Sources */,
 				18B2EAD62C09EB650025AF79 /* Frameworks */,
 				18B2EAD72C09EB650025AF79 /* Resources */,
+				1807D6E72C3C417E0075A3A5 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -322,6 +392,10 @@
 				LastSwiftUpdateCheck = 1500;
 				LastUpgradeCheck = 1500;
 				TargetAttributes = {
+					1807D6EF2C3C4D5F0075A3A5 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = 18B2EAD82C09EB650025AF79;
+					};
 					18B2EAD82C09EB650025AF79 = {
 						CreatedOnToolsVersion = 15.0;
 					};
@@ -341,11 +415,19 @@
 			projectRoot = "";
 			targets = (
 				18B2EAD82C09EB650025AF79 /* UefaScreen */,
+				1807D6EF2C3C4D5F0075A3A5 /* UefaScreenTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		1807D6EE2C3C4D5F0075A3A5 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		18B2EAD72C09EB650025AF79 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -360,6 +442,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1807D6EC2C3C4D5F0075A3A5 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1807D6F32C3C4D5F0075A3A5 /* UefaScreenTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		18B2EAD52C09EB650025AF79 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -404,7 +494,51 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		1807D6F52C3C4D5F0075A3A5 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 18B2EAD82C09EB650025AF79 /* UefaScreen */;
+			targetProxy = 1807D6F42C3C4D5F0075A3A5 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		1807D6F72C3C4D5F0075A3A5 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.sportzinteractive.UefaScreenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UefaScreen.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/UefaScreen";
+			};
+			name = Debug;
+		};
+		1807D6F82C3C4D5F0075A3A5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.sportzinteractive.UefaScreenTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/UefaScreen.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/UefaScreen";
+			};
+			name = Release;
+		};
 		18B2EAE52C09EB670025AF79 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -587,6 +721,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		1807D6F62C3C4D5F0075A3A5 /* Build configuration list for PBXNativeTarget "UefaScreenTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1807D6F72C3C4D5F0075A3A5 /* Debug */,
+				1807D6F82C3C4D5F0075A3A5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		18B2EAD42C09EB650025AF79 /* Build configuration list for PBXProject "UefaScreen" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

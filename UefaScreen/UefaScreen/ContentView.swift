@@ -11,7 +11,7 @@ struct ContentView: View {
     @EnvironmentObject var sharedData: CommonData
     
     var body: some View {
-        MatchPredictorView(matchdays: allMatches)
+        MatchPredictorView()
             .onAppear{
                 sharedData.orientation = UIDevice.current.orientation
             }
