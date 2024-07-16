@@ -7,17 +7,10 @@
 
 import SwiftUI
 
-struct ContentView: View {
-    @EnvironmentObject var sharedData: CommonData
+struct ContentView: View {    
     
     var body: some View {
-        MatchPredictorView(matchdays: allMatches)
-            .onAppear{
-                sharedData.orientation = UIDevice.current.orientation
-            }
-            .onRotate { UIDeviceOrientation in
-                sharedData.orientation = UIDeviceOrientation
-            }        
+        StartupView()
     }
 }
 

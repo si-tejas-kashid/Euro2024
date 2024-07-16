@@ -8,7 +8,7 @@
 import Foundation
 
 public enum Environments: String, Codable {
-    case staging = "https://dummy.restapiexample.com/api/v1/"
+    case staging = "https://stg-games.the-afc.com/"
     case production = "https://prod.io"
 }
 

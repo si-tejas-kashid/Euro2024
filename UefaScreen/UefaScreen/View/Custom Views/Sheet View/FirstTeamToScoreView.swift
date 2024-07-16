@@ -18,11 +18,11 @@ struct FirstTeamToScoreView: View {
             
             HStack {
                 
-                teamOptionInFirstTeamView(teamName: matchCardDetailVM.selectedMatchCardDetail?.team1Name ?? String())
+                teamOptionInFirstTeamView(teamName: matchCardDetailVM.selectedMatchCardDetail?.teamAName ?? String())
                 Spacer()
                 teamOptionInFirstTeamView(teamName: "None")
                 Spacer()
-                teamOptionInFirstTeamView(teamName: matchCardDetailVM.selectedMatchCardDetail?.team2Name ?? String())
+                teamOptionInFirstTeamView(teamName: matchCardDetailVM.selectedMatchCardDetail?.teamBName ?? String())
                 
             }
             .padding(.horizontal, 45)
@@ -30,7 +30,7 @@ struct FirstTeamToScoreView: View {
             .padding(.top, 20)
         }
         .onAppear{
-            isSelected = matchCardDetailVM.getSelectedTeamByDefault(matchID: matchCardDetailVM.selectedMatchCardDetail?.matchid ?? String())
+            isSelected = matchCardDetailVM.getSelectedTeamByDefault(matchID: matchCardDetailVM.selectedMatchCardDetail?.matchID ?? String())
         }
         .cornerRadius(20)
         .background(matchCardDetailVM.fromIpad ? Color.whiteF4F3F5 : Color.blue0D1E62)
@@ -87,10 +87,10 @@ struct FirstTeamToScoreView: View {
     //MARK: Team Option View
     
     func teamOptionInFirstTeamView(teamName: String) -> some View {
-        VStack {
+        VStack(spacing: 0) {
             Button (action: {
                 isSelected = teamName
-                if isSelected != matchCardDetailVM.getSelectedTeamByDefault(matchID: matchCardDetailVM.selectedMatchCardDetail?.matchid ?? String()) {
+                if isSelected != matchCardDetailVM.getSelectedTeamByDefault(matchID: matchCardDetailVM.selectedMatchCardDetail?.matchID ?? String()) {
                 teamSelected(isSelected ?? String())
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                         matchCardDetailVM.onDismiss()
@@ -106,7 +106,7 @@ struct FirstTeamToScoreView: View {
                                     .font(.system(size: 20))
                                     .frame(width: 60, height: 60)
                             } else {
-                                Image(teamName.lowercased() )
+                                Image(/*teamName.lowercased() ?? */"default")
                                     .resizable()
                                     .frame(width: 60, height: 60)
                                     .clipShape(Circle())
@@ -141,6 +141,9 @@ struct FirstTeamToScoreView: View {
             }
             Text(teamName)
                 .font(.headline)
+                .multilineTextAlignment(.center)
+            
+            
         }
     }
 }

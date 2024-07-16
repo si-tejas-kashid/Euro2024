@@ -8,8 +8,7 @@
 import SwiftUI
 
 struct MatchPredictorView: View {
-    var matchdays: [MatchDays]?
-    @StateObject var viewModel = MatchPredictorVM()
+    @EnvironmentObject var viewModel: MatchPredictorVM
     @EnvironmentObject var commonData: CommonData
     
     var body: some View {
@@ -36,7 +35,6 @@ struct MatchPredictorView: View {
                                             
                                             dataAndShareButtonView                      //Data And Share Button View
                                             matchPredictorMatchCardView(proxy: proxy)   //Match Predictor MatchCard View
-                                            employeeDetailsView                         //Employee Details View
                                             
                                         }
                                     }
@@ -49,7 +47,7 @@ struct MatchPredictorView: View {
                             }
 //                            Spacer(minLength: commonData.orientation.isLandscape ? 50 : 0)
 //                        }
-                        .navigationBarStyle(backgroundImage: "QSDKNavigationBG", titleColor: .white, points: matchdays?.reduce(0){$0 + ($1.points ?? 0)})
+                        .navigationBarStyle(backgroundImage: "QSDKNavigationBG", titleColor: .white, points: 0 /*viewModel.allMatchDaysArr?.reduce(0){$0 + ($1.points ?? 0)}*/)
                     }
                 }
                 .foregroundColor(.white)
@@ -59,15 +57,10 @@ struct MatchPredictorView: View {
                 .navigationTitle("Match Predictor")
             }
             
-            .popup(isPresented: Binding.constant(viewModel.showFirstTeamView || viewModel.showLastFiveMatchView || viewModel.showAddEmployeeView), dragToDismiss: true) {
+            .popup(isPresented: Binding.constant(viewModel.showFirstTeamView || viewModel.showLastFiveMatchView), dragToDismiss: true) {
                 matchPredictorCommonSheetView
             }
             .ignoresSafeArea(.all)
-            
-            .onAppear {
-                viewModel.getEmployeeData()
-            }
-            
         }
         .background(Color.darkBlue000D40)
         .navigationViewStyle(.stack)
@@ -80,32 +73,33 @@ struct MatchPredictorView: View {
         VStack(spacing: 0) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
-                    ForEach(matchdays ?? [], id: \.matchDayID){ data in
+                    ForEach(Array(viewModel.matchDayArray.enumerated()), id: \.offset) { index, value in
                         Button(action: {
-                            viewModel.selectedMatchDay = data.matchDayID
+                            viewModel.selectedMatchDay = value
                         })
                         {
                             VStack {
-                                Text(data.title ?? "Matchday")
+                                    Text("Matchday \(value)")
                                     .foregroundColor(.white)
                                     .padding(.horizontal,10)
                                     .font(.footnote)
                                     .font(.system(size: 50))
                                     .padding(.top, 10)
-                                Text("\(data.points ?? 0) pts")
-                                    .bold()
+//                                Text("\(data.points ?? 0) pts")
+//                                    .bold()
                                 Rectangle()
                                     .padding(.bottom, -1)
                                     .frame(height: 2)
-                                    .foregroundColor(viewModel.selectedMatchDay == data.matchDayID ? .yellow : .clear)
+                                    .foregroundColor(viewModel.selectedMatchDay == value ? .yellow : .clear)
                             }
                         }
                     }
+                    .onAppear{
+                        viewModel.selectedMatchDay = Int(viewModel.allMatchDaysArr?.first?.matchday ?? String())
+                    }
                     Spacer()
                 }
-                .onAppear{
-                    viewModel.selectedMatchDay = matchdays?.first?.matchDayID
-                }
+                
                 .padding(.leading,20)
             }
             
@@ -119,7 +113,8 @@ struct MatchPredictorView: View {
     //MARK: Data And Share Button View
     var dataAndShareButtonView: some View {
         HStack(spacing:0) {
-            Text(matchdays?[matchdays?.firstIndex(where: { Element in Element.matchDayID == viewModel.selectedMatchDay}) ?? 0].dateRange ?? "")
+//            Text(viewModel.allMatchDaysArr?[viewModel.allMatchDaysArr?.firstIndex(where: { Element in Element.matchDayID == viewModel.selectedMatchDay}) ?? 0].dateRange ?? "")
+            Text("15 - 19 July")
                 .font(.system(size: 15, weight: .bold))
             Spacer()
             Button (action: {
@@ -150,55 +145,27 @@ struct MatchPredictorView: View {
     
     //MARK: MatchCard View
     func matchPredictorMatchCardView(proxy: ScrollViewProxy) -> some View {
-        VStack(spacing:0) {
-            ForEach(matchdays?[matchdays?.firstIndex(where: { element in element.matchDayID == viewModel.selectedMatchDay}) ?? 0].matches ?? [], id: \.matchid)
-            { match in
+        VStack(spacing: 0) {
+            ForEach(viewModel.allMatchDaysArr?.filter({ value in
+                Int(value.matchday ?? String()) == viewModel.selectedMatchDay
+            }) ?? [], id: \.id) { match in
                 MatchCardView(matchCardDetail: match,tapped: {
                     withAnimation(.linear(duration: 1)) {
-                        proxy.scrollTo(match.matchid, anchor: .center)
+                        proxy.scrollTo(match.matchID, anchor: .center)
                     }
                 })
-                .id(match.matchid)
+                .id(match.matchID)
                 
-                    .clipShape(RoundedRectangle(cornerRadius: 15))
-                    .overlay (
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(lineWidth: 2)
-                            .foregroundColor(match.matchid == viewModel.boosterAppliedMatchID ? .yellow : Color.clear)
-                    )
-                    .padding(.vertical, 10)
-                    .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 150 : 0)
-                    .padding(.horizontal, (commonData.orientation.isLandscape && UIDevice.current.userInterfaceIdiom == .pad) ? 150 : 10)
+                .clipShape(RoundedRectangle(cornerRadius: 15))
+                .overlay (
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(lineWidth: 2)
+                        .foregroundColor(match.matchID == viewModel.boosterAppliedMatchID ? .yellow : Color.clear)
+                )
+                .padding(.vertical, 10)
+                .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 150 : 0)
+                .padding(.horizontal, (commonData.orientation.isLandscape && UIDevice.current.userInterfaceIdiom == .pad) ? 150 : 10)
             }
-        }
-    }
-    
-    //MARK: Employee Details View
-    var employeeDetailsView: some View {
-        LazyVStack {
-            if viewModel.selectedMatchDay == matchdays?.first?.matchDayID {
-                ForEach(viewModel.employeesData, id: \.id) {employee in
-                    EmployeeDetailView(employeeDetail: employee)
-                        .cornerRadius(15)
-                        .padding(.vertical, 10)
-                        .padding(.horizontal, UIDevice.current.userInterfaceIdiom == .pad ? 150 : 0)
-                        .padding(.horizontal, (commonData.orientation.isLandscape && UIDevice.current.userInterfaceIdiom == .pad) ? 150 : 10)
-                }
-                
-                Button(action: {
-                    viewModel.showAddEmployeeView = true
-                }) {
-                    Text("Add Employee")
-                        .padding(5)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 5.0)
-                                .stroke()
-                        )
-                }
-                .padding(.bottom, 20)
-            }
-            
-            
         }
     }
     
@@ -215,17 +182,13 @@ struct MatchPredictorView: View {
                     if viewModel.showFirstTeamView {
                         FirstTeamToScoreView(teamSelected: { teamName in
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                viewModel.storeData(matchid: viewModel.selectedMatchCardDetail?.matchid ?? String(), firstTeamSelected: teamName)
+                                viewModel.storeData(matchid: viewModel.selectedMatchCardDetail?.matchID ?? String(), firstTeamSelected: teamName)
                             }
                         })
                         
                     } else if viewModel.showLastFiveMatchView {
                         LastFiveMatchesView()
-                    } else if viewModel.showAddEmployeeView {
-                        CreateEmployeeView(submitDetail: ({details in
-                                viewModel.setEmployeeData(with: details)
-                        })
-                    )}
+                    } 
                 }
                 .cornerRadius(30)
                 .padding(viewModel.fromIpad ? 150 : 0)
@@ -246,6 +209,6 @@ struct MatchPredictorView: View {
 }
 
 //#Preview {
-//    MatchPredictorView(matchdays: allMatches)
+//    MatchPredictorView(viewModel.allMatchDaysArr: allMatches)
 //        .environmentObject(SharedData())
 //}

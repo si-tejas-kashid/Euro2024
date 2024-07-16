@@ -18,17 +18,20 @@ final class MatchPredictorVM: ObservableObject {
     @Published var showFirstTeamView: Bool = false
     @Published var showLastFiveMatchView: Bool = false
     @Published var showAddEmployeeView: Bool = false
-    @Published var selectedMatchCardDetail: Match? = nil
+    @Published var selectedMatchCardDetail: Value? = nil
     @Published var orientation: UIDeviceOrientation = UIDeviceOrientation.portrait
     @Published var fromIpad: Bool = UIDevice.current.userInterfaceIdiom == .pad
+    let apiService = ServiceManager()
     
     //MARK: Arrays
     @Published var matchCardDetail: MatchCard = MatchCard()
-    @Published var allMatchDaysArr: [MatchDays] = allMatches
+//    @Published var allMatchDaysArr: [MatchDays]? = allMatches
+    @Published var allMatchDaysArr: [Value]?
     @Published var matchCardStorage: [MatchCardStorageModel] = []
-    @Published var employeesData: [EmployeeData] = []
+    @Published var matchDayArray: [Int] = []
+    @Published var boostersArray: [String] = []
+    @Published var tempPopularPrediction: [TempPopularPred] = []
     
-    let apiService = ServiceManager()
     //MARK: Functions
     
     func storeData(matchid: String, team1Prediction: String = String(), team2Prediction: String = String(), firstTeamSelected: String = String()) {
@@ -49,8 +52,8 @@ final class MatchPredictorVM: ObservableObject {
             }
         } else {
             if team1Prediction != String() {
-                let newStorageArr = MatchCardStorageModel(matchID: matchid, pred1: team1Prediction, pred2: team2Prediction, firstTeamToScore: String(), isSubmitted: true)
-                matchCardStorage.append(newStorageArr)
+//                let newStorageArr = MatchCardStorageModel(matchID: matchid, pred1: team1Prediction, pred2: team2Prediction, firstTeamToScore: String(), isSubmitted: true)
+//                matchCardStorage.append(newStorageArr)
             }
         }
     }
@@ -73,13 +76,15 @@ final class MatchPredictorVM: ObservableObject {
     
     func checkIfMatchIDExists(matchID: String) -> Bool {
         return ((matchCardStorage.filter({ matchCardStorageModel in
-            matchCardStorageModel.matchID == matchID
+//            matchCardStorageModel.matchID == matchID
+            true
         })).count > 0) ? true : false
     }
     
     func selectedMatchIndexInStoredArr(matchID: String) -> Int? {
         return matchCardStorage.firstIndex(where: { matchCardStorageModel in
-            matchCardStorageModel.matchID == matchID
+//            matchCardStorageModel.matchID == matchID
+            true
         })
     }
     
@@ -107,51 +112,35 @@ final class MatchPredictorVM: ObservableObject {
         }
     }
     
+    func generateMatchdayArray() {
+        for match in (allMatchDaysArr ?? []) {
+            matchDayArray.append(Int(match.matchday ?? String()) ?? 0)
+            matchDayArray = Array(Set(matchDayArray)).sorted(by: { num1, num2 in
+                num1 < num2
+            })
+        }
+    }
+    
+    func generatePopularPredictions() {
+        for _ in (0 ..< Int.random(in: 2..<5)) {
+            let newPrediction = TempPopularPred(team1Prediction: Int.random(in: 0..<10), team2Prediction: Int.random(in: 0..<10), predictionPercentage: Int.random(in: 0..<101))
+            tempPopularPrediction.append(newPrediction)
+        }
+        
+    }
+    
     //MARK: API Calls for Employee data
     
-    func getEmployeeData() {
+    func getFixturesData() {
         Task{
             do {
-                let data = try await apiService.execute(with: EmployeesURN())
-                
-                data.data?.forEach({ employee in
-                    let newEmployee = EmployeeData(
-                        id: employee.id,
-                        employeeName: employee.employeeName,
-                        employeeSalary: employee.employeeSalary,
-                        employeeAge: employee.employeeAge,
-                        profileImage: employee.profileImage)
-                    
-                    employeesData.append(newEmployee)
-                })
-                
+                let data = try await apiService.execute(with: FixturesURN())
+                allMatchDaysArr = data.data?.value
+                generateMatchdayArray()
+                generatePopularPredictions()
             } catch {
                 print(error)
             }
         }
     }
-    
-    func setEmployeeData(with employeeRequestDetails: EmployeeRequestModel)  {
-        let request: EmployeeRequestModel = employeeRequestDetails
-        Task{
-            do{
-                let requestData = try request.encodeJSON()
-                let createEmployeeURN = CreateEmployeeURN(body: requestData)
-                let data = try await apiService.execute(with: createEmployeeURN)
-                if data.status.lowercased() == "success" {
-                    let newEmployee = EmployeeData(id: data.data.id,
-                                                   employeeName: data.data.name,
-                                                   employeeSalary: data.data.salary,
-                                                   employeeAge: data.data.age,
-                                                   profileImage: String())
-                    
-                    employeesData.append(newEmployee)
-                    showAddEmployeeView = false
-                }
-            } catch {
-                print(error)
-            }
-        }
-    }
-    
 }

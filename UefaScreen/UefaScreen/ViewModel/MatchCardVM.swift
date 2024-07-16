@@ -23,6 +23,6 @@ struct MatchCardVariables {
     var showKeyboard: Bool = false
     var savedTeam1Pred: String = ""
     var savedTeam2Pred: String = ""
-    
-    
+    var isSubmitted: Bool = false //Temp variable
+    var selectedButton: UUID? = nil
 }

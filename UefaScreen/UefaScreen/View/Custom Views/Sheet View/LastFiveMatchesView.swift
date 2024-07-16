@@ -19,7 +19,7 @@ struct LastFiveMatchesView: View {
             lastFiveMatchesViewMatchDetailsList             //Match Details List
         }
         .onAppear {
-            isSelected = matchDetailVM.selectedMatchCardDetail?.team1Name
+            isSelected = matchDetailVM.selectedMatchCardDetail?.teamAName
         }
         .background(matchDetailVM.fromIpad ? Color.whiteF4F3F5 : Color.blue0D1E62)
         .foregroundColor(matchDetailVM.fromIpad ? Color.grey000D40 : Color.white)
@@ -63,7 +63,7 @@ struct LastFiveMatchesView: View {
         HStack {
             VStack {
                 HStack{
-                    Image(matchDetailVM.selectedMatchCardDetail?.team1Name?.lowercased() ?? String())
+                    Image(/*matchDetailVM.selectedMatchCardDetail?.teamAName?.lowercased() ?? */"default")
                         .resizable()
                         .frame(width: 20, height: 20)
                         .clipShape(Circle())
@@ -73,14 +73,14 @@ struct LastFiveMatchesView: View {
                                 .background(Color.clear)
                                 .foregroundColor(Color.greyB2C0C3)
                         )
-                    Text(matchDetailVM.selectedMatchCardDetail?.team1Name ?? String())
+                    Text(matchDetailVM.selectedMatchCardDetail?.teamAName ?? String())
                 }
                 .onTapGesture {
-                    isSelected = matchDetailVM.selectedMatchCardDetail?.team1Name
+                    isSelected = matchDetailVM.selectedMatchCardDetail?.teamAName
                 }
                 
                 Rectangle()
-                    .foregroundColor(isSelected == matchDetailVM.selectedMatchCardDetail?.team1Name
+                    .foregroundColor(isSelected == matchDetailVM.selectedMatchCardDetail?.teamAName
                                      ? matchDetailVM.fromIpad ? Color.black : Color.yellow
                                      : matchDetailVM.fromIpad ? Color.greyB2C0C3 : .white.opacity(0.2))
                     .frame(height: 2)
@@ -89,8 +89,8 @@ struct LastFiveMatchesView: View {
             
             VStack {
                 HStack{
-                    Text(matchDetailVM.selectedMatchCardDetail?.team2Name ?? String())
-                    Image(matchDetailVM.selectedMatchCardDetail?.team2Name?.lowercased() ?? String())
+                    Text(matchDetailVM.selectedMatchCardDetail?.teamBName ?? String())
+                    Image(/*matchDetailVM.selectedMatchCardDetail?.teamBName?.lowercased() ??*/ "default")
                         .resizable()
                         .frame(width: 20, height: 20)
                         .clipShape(Circle())
@@ -102,10 +102,10 @@ struct LastFiveMatchesView: View {
                         )
                 }
                 .onTapGesture {
-                    isSelected = matchDetailVM.selectedMatchCardDetail?.team2Name
+                    isSelected = matchDetailVM.selectedMatchCardDetail?.teamBName
                 }
                 Rectangle()
-                    .foregroundColor(isSelected == matchDetailVM.selectedMatchCardDetail?.team2Name
+                    .foregroundColor(isSelected == matchDetailVM.selectedMatchCardDetail?.teamBName
                                      ? matchDetailVM.fromIpad ? Color.black : Color.yellow
                                      : matchDetailVM.fromIpad ? Color.greyB2C0C3 : Color.white.opacity(0.2))
                     .frame(height: 2)

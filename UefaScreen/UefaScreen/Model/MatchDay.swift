@@ -60,18 +60,6 @@ struct PopularPrediction: Codable, Identifiable {
 
 struct MatchCard: Identifiable {
     var id: Int?
-    
-//    var textFieldText1: String = "+"
-//    var textFieldText2: String = "+"
-//    var blank1: String = ""
-//    var blank2: String = ""
-//    var isFocused1: Bool = false
-//    var isFocused2: Bool = false
-//    var showToast: Bool = false
-//    var showKeyboard: Bool = false
-//    var isBoosterApplied: Bool = false
-//    var savedTeam1Pred: String = ""
-//    var savedTeam2Pred: String = ""
 }
 
 struct MatchCardStorageModel {
@@ -80,4 +68,13 @@ struct MatchCardStorageModel {
     var pred2: String
     var firstTeamToScore: String
     var isSubmitted: Bool
+}
+
+//MARK: Temporary PopularPredictions
+
+struct TempPopularPred: Identifiable {
+    var id = UUID()
+    var team1Prediction: Int
+    var team2Prediction: Int
+    var predictionPercentage: Int
 }

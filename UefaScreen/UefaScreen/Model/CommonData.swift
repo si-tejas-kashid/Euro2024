@@ -10,5 +10,5 @@ import UIKit
 
 class CommonData: ObservableObject {
     @Published var isBoosterApplied = ""
-    @Published var orientation: UIDeviceOrientation = UIDeviceOrientation.portrait
+    @Published var orientation: UIDeviceOrientation = UIDevice.current.orientation
 }

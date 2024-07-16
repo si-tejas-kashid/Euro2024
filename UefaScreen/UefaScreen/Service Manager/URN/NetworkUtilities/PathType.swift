@@ -12,6 +12,8 @@ enum PathType {
     case translation
     case employees
     case createEmployee
+    case fixtures
+    case userPredictions(guid: String)
     
     private var endPoint: String {
         switch self {
@@ -23,8 +25,16 @@ enum PathType {
             return "employees"
         case .createEmployee:
             return "create"
+        case .fixtures:
+            return "predictor/feeds/fixtures/fixtures_1_1_en.json"
+        case .userPredictions:
+            let url = PredictorUtils.shared.userPredictionURL
+                .replacingOccurrences(of: PredictorParamKeys.guid, with: PredictorUserDetails.shared.getGUID())
+                .replacingOccurrences(of: PredictorParamKeys.buster, with: PredictorUserDetails.shared.getTempBusterValue())
+            return url
         }
     }
+    
     
     var rawValue: String {
         var url: String = endPoint
@@ -32,7 +42,7 @@ enum PathType {
         case .config:
             url = url.replacingOccurrences(of: URLParamKeys.buster, with: BusterHelper.shared.getBusterFor(type: getBusterType ?? .particularCase))
             return url
-        case .translation, .employees, .createEmployee:
+        case .translation, .employees, .createEmployee, .fixtures, .userPredictions:
             return url
         }
     }
@@ -48,3 +58,4 @@ enum PathType {
         }
     }
 }
+

@@ -31,28 +31,14 @@ struct TranslationURN: CommonGetURN {
     }
 }
 
-struct EmployeesURN: CommonGetURN {
-    typealias Derived = EmployeeResponseModel
+struct FixturesURN: CommonGetURN {
+    typealias Derived = Fixtures
     
     var baseURLType: BaseURLType {
         .base
     }
     
     var pathType: PathType {
-        .employees
+        .fixtures
     }
-}
-
-struct CreateEmployeeURN: CommonPostURN {
-    typealias Derived = CreateEmployee
-    
-    var baseURLType: BaseURLType {
-        .base
-    }
-    
-    var pathType: PathType {
-        .createEmployee
-    }
-    
-    var body: Data?
 }

@@ -44,10 +44,6 @@ extension CommonURN {
         urlRequest.httpBody = body
         return urlRequest
     }
-    
-    var headers: ServiceHeaderType? {
-        .DEFAULT
-    }
 
 }
 
@@ -68,6 +64,10 @@ extension CommonGetURN {
     
     var body: Data? {
         .none
+    }
+    
+    var headers: ServiceHeaderType? {
+        .NONE
     }
 }
 
