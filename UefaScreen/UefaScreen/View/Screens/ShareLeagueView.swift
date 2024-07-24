@@ -12,6 +12,7 @@ struct ShareLeagueView: View {
     
     
     var body: some View {
+        
         VStack {
             ScrollView {
                 
