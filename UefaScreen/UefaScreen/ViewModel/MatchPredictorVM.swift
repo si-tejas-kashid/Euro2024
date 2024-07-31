@@ -143,4 +143,44 @@ final class MatchPredictorVM: ObservableObject {
             }
         }
     }
+    
+    func userPrediction(){
+        Task{
+            do{
+                let data = try await apiService.execute(with: UserPredictionsURN())
+            }catch{
+                print(error)
+            }
+        }
+    }
+    
+    func submitPrediction(){
+        let requestModel = SubmitPredictions(optType: 1, tourid: 1, soccerMatchid: "3jaxaba41eo1xj0esrt73nnkk", tourGamedayid: 1, questionid: 1, optionid: 1, betCoin: 1, platformid: 1, boosterid: 0, arrTeamid:  [
+            "c9swyor08g9pedxpe3n321svu",
+            "7wiwxjo7a9yudfe72ls12i4q5"
+        ])
+        Task{
+            do{
+                let requestData = try requestModel.encodeJSON()
+                let submitPredictionsURN = SubmitPredictionsURN(body: requestData)
+                let submitPredictionsData = try await apiService.execute(with: submitPredictionsURN)
+            }catch{
+                print(error)
+            }
+        }
+    }
+    
+    func boosterApplied(){
+        Task{
+            let requestModel = Boosters(optType: 1, tourid: 1, soccerMatchid: "3jpenyzsv80vq8cjvur2836z8", tourGamedayid: 1, platformid: 1, boosterid: 1)
+            do{
+                let requestData = try requestModel.encodeJSON()
+                let boosterURN = BoostersURN(body: requestData)
+                let boostersData = try await apiService.execute(with: boosterURN)
+                print("Success")
+            }catch{
+                print(error)
+            }
+        }
+    }
 }

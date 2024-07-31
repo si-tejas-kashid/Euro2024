@@ -49,8 +49,11 @@
 		18C4A4DB2C2027BF00884EBB /* MatchDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C4A4DA2C2027BF00884EBB /* MatchDay.swift */; };
 		18C4A4DD2C20288600884EBB /* MatchPredictorVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C4A4DC2C20288600884EBB /* MatchPredictorVM.swift */; };
 		18C4A4E02C206ACC00884EBB /* TextFieldFocusedState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C4A4DF2C206ACC00884EBB /* TextFieldFocusedState.swift */; };
-		18C612FD2C231C31002D1B4C /* MatchData.json in Resources */ = {isa = PBXBuildFile; fileRef = 18C612FC2C231C31002D1B4C /* MatchData.json */; };
-		18C612FF2C24718C002D1B4C /* ModelData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 18C612FE2C24718C002D1B4C /* ModelData.swift */; };
+		93095F982C58CBF90060BC70 /* getUserPredictions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93095F972C58CBF90060BC70 /* getUserPredictions.swift */; };
+		93982DE62C569C3100CFF7DA /* SubmitPredictionsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93982DE52C569C3100CFF7DA /* SubmitPredictionsResponse.swift */; };
+		93982DE92C569D3900CFF7DA /* BoostersResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93982DE82C569D3900CFF7DA /* BoostersResponse.swift */; };
+		93982DEB2C578B1C00CFF7DA /* SubmitPredictionsRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93982DEA2C578B1C00CFF7DA /* SubmitPredictionsRequest.swift */; };
+		93982DED2C578B2900CFF7DA /* BoostersRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93982DEC2C578B2900CFF7DA /* BoostersRequest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -97,8 +100,11 @@
 		18C4A4DA2C2027BF00884EBB /* MatchDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchDay.swift; sourceTree = "<group>"; };
 		18C4A4DC2C20288600884EBB /* MatchPredictorVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchPredictorVM.swift; sourceTree = "<group>"; };
 		18C4A4DF2C206ACC00884EBB /* TextFieldFocusedState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextFieldFocusedState.swift; sourceTree = "<group>"; };
-		18C612FC2C231C31002D1B4C /* MatchData.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = MatchData.json; sourceTree = "<group>"; };
-		18C612FE2C24718C002D1B4C /* ModelData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModelData.swift; sourceTree = "<group>"; };
+		93095F972C58CBF90060BC70 /* getUserPredictions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = getUserPredictions.swift; sourceTree = "<group>"; };
+		93982DE52C569C3100CFF7DA /* SubmitPredictionsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitPredictionsResponse.swift; sourceTree = "<group>"; };
+		93982DE82C569D3900CFF7DA /* BoostersResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostersResponse.swift; sourceTree = "<group>"; };
+		93982DEA2C578B1C00CFF7DA /* SubmitPredictionsRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubmitPredictionsRequest.swift; sourceTree = "<group>"; };
+		93982DEC2C578B2900CFF7DA /* BoostersRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoostersRequest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -135,7 +141,6 @@
 				18B2EADE2C09EB650025AF79 /* ContentView.swift */,
 				18B7B3B62C3FEAE80024CD38 /* StartupView.swift */,
 				18C2D1282C38575300592EED /* Service Manager */,
-				18C612F82C231BE3002D1B4C /* StaticData */,
 				18C4A4D92C2026AD00884EBB /* Model */,
 				18C4A4D82C20268300884EBB /* View */,
 				18C4A4D72C20265E00884EBB /* ViewModel */,
@@ -278,8 +283,10 @@
 			children = (
 				18C4A4DA2C2027BF00884EBB /* MatchDay.swift */,
 				18B7B3B42C3FCF980024CD38 /* Fixtures.swift */,
-				18C612FE2C24718C002D1B4C /* ModelData.swift */,
 				189727A42C2612B400534683 /* CommonData.swift */,
+				93095F992C58CC3D0060BC70 /* UserPredictions */,
+				93982DEE2C578B9000CFF7DA /* SubmitPredictions */,
+				93982DEF2C578BA100CFF7DA /* Boosters */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -299,12 +306,30 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		18C612F82C231BE3002D1B4C /* StaticData */ = {
+		93095F992C58CC3D0060BC70 /* UserPredictions */ = {
 			isa = PBXGroup;
 			children = (
-				18C612FC2C231C31002D1B4C /* MatchData.json */,
+				93095F972C58CBF90060BC70 /* getUserPredictions.swift */,
 			);
-			path = StaticData;
+			path = UserPredictions;
+			sourceTree = "<group>";
+		};
+		93982DEE2C578B9000CFF7DA /* SubmitPredictions */ = {
+			isa = PBXGroup;
+			children = (
+				93982DEA2C578B1C00CFF7DA /* SubmitPredictionsRequest.swift */,
+				93982DE52C569C3100CFF7DA /* SubmitPredictionsResponse.swift */,
+			);
+			path = SubmitPredictions;
+			sourceTree = "<group>";
+		};
+		93982DEF2C578BA100CFF7DA /* Boosters */ = {
+			isa = PBXGroup;
+			children = (
+				93982DEC2C578B2900CFF7DA /* BoostersRequest.swift */,
+				93982DE82C569D3900CFF7DA /* BoostersResponse.swift */,
+			);
+			path = Boosters;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -366,7 +391,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				18B2EAE42C09EB670025AF79 /* Preview Assets.xcassets in Resources */,
-				18C612FD2C231C31002D1B4C /* MatchData.json in Resources */,
 				18B2EAFC2C0F31570025AF79 /* ColorAssets.xcassets in Resources */,
 				18B2EAE12C09EB670025AF79 /* ImageAssets.xcassets in Resources */,
 			);
@@ -387,7 +411,6 @@
 				18B2EAFA2C0F27EA0025AF79 /* MatchPredictorView.swift in Sources */,
 				18C2D13A2C38575300592EED /* NetworkServiceProvider.swift in Sources */,
 				189F04412C2D658200EFD300 /* DeviceRotationViewModifier.swift in Sources */,
-				18C612FF2C24718C002D1B4C /* ModelData.swift in Sources */,
 				18C4A4E02C206ACC00884EBB /* TextFieldFocusedState.swift in Sources */,
 				18B2EAEF2C0DB5950025AF79 /* ButtonHorizontalAndColored.swift in Sources */,
 				18B2EB072C1744950025AF79 /* FirstTeamToScoreView.swift in Sources */,
@@ -398,14 +421,19 @@
 				18C4A4D62C201E7E00884EBB /* MatchCardVM.swift in Sources */,
 				18B2EB092C1839CC0025AF79 /* LastFiveMatchesView.swift in Sources */,
 				18B7B3BB2C4071B30024CD38 /* String+Ext.swift in Sources */,
+				93982DEB2C578B1C00CFF7DA /* SubmitPredictionsRequest.swift in Sources */,
+				93982DE62C569C3100CFF7DA /* SubmitPredictionsResponse.swift in Sources */,
 				18B2EAF12C0DD3800025AF79 /* NavigationBarModifier.swift in Sources */,
 				18B7B3B92C4070920024CD38 /* Date+Ext.swift in Sources */,
 				18C2D13B2C38575300592EED /* BasrURLType.swift in Sources */,
+				93982DE92C569D3900CFF7DA /* BoostersResponse.swift in Sources */,
 				18C2D1392C38575300592EED /* ServiceHeaderType.swift in Sources */,
 				18B7B3BD2C4071EA0024CD38 /* CommonEnums.swift in Sources */,
 				18C2D1382C38575300592EED /* ServiceManager.swift in Sources */,
+				93982DED2C578B2900CFF7DA /* BoostersRequest.swift in Sources */,
 				18B7B3C12C4591DC0024CD38 /* PredictorServiceConstants.swift in Sources */,
 				1851CC9E2C23097800FFB3F0 /* RoundedCorner.swift in Sources */,
+				93095F982C58CBF90060BC70 /* getUserPredictions.swift in Sources */,
 				18C2D13C2C38575300592EED /* PathType.swift in Sources */,
 				18B7B3B72C3FEAE80024CD38 /* StartupView.swift in Sources */,
 				18C2D1362C38575300592EED /* BusterHelper.swift in Sources */,

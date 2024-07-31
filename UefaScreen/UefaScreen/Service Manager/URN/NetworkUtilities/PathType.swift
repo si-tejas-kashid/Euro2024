@@ -13,7 +13,9 @@ enum PathType {
     case employees
     case createEmployee
     case fixtures
-    case userPredictions(guid: String)
+    case userPredictions
+    case boosters
+    case submitPrediction
     
     private var endPoint: String {
         switch self {
@@ -28,9 +30,16 @@ enum PathType {
         case .fixtures:
             return "predictor/feeds/fixtures/fixtures_1_1_en.json"
         case .userPredictions:
-            let url = PredictorUtils.shared.userPredictionURL
+            let url = 
+            PredictorUtils.shared.userPredictionURL
                 .replacingOccurrences(of: PredictorParamKeys.guid, with: PredictorUserDetails.shared.getGUID())
-                .replacingOccurrences(of: PredictorParamKeys.buster, with: PredictorUserDetails.shared.getTempBusterValue())
+            return url
+        case .boosters:
+            let url = PredictorUtils.shared.boostersURL
+            return url
+        case .submitPrediction:
+            let url = PredictorUtils.shared.submitPredictionURL
+                .replacingOccurrences(of: PredictorParamKeys.guid, with: PredictorUserDetails.shared.submitPredictionGUID())
             return url
         }
     }
@@ -42,7 +51,13 @@ enum PathType {
         case .config:
             url = url.replacingOccurrences(of: URLParamKeys.buster, with: BusterHelper.shared.getBusterFor(type: getBusterType ?? .particularCase))
             return url
-        case .translation, .employees, .createEmployee, .fixtures, .userPredictions:
+        case .translation,
+                .employees,
+                .createEmployee,
+                .fixtures,
+                .userPredictions,
+                .boosters,
+                .submitPrediction:
             return url
         }
     }

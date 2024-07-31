@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "1C406A6B-AA48-4F95-8182-F3318EAD3019"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FA81966E-3F70-41FC-AEA0-603AD48341D2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UefaScreen/Service Manager/ServiceManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "25"
+            endingLineNumber = "25"
+            landmarkName = "execute(with:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "FA81966E-3F70-41FC-AEA0-603AD48341D2 - 4d81c3a44e9dcd8c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for UefaScreen.ServiceManager.execute&lt;&#x3c4;_0_0 where &#x3c4;_0_0: UefaScreen.URN&gt;(with: &#x3c4;_0_0) async throws -&gt; &#x3c4;_0_0.Derived"
+                  moduleName = "UefaScreen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kartikay/Documents/si-projects/UEFAPredictor/UefaScreen/UefaScreen/Service%20Manager/ServiceManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25">
+               </Location>
+               <Location
+                  uuid = "FA81966E-3F70-41FC-AEA0-603AD48341D2 - 105ebd6ce5f7f585"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for UefaScreen.ServiceManager.execute&lt;URNType where URNType: UefaScreen.URN&gt;(with: URNType) async throws -&gt; URNType.Derived"
+                  moduleName = "UefaScreen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kartikay/Documents/si-projects/UEFAPredictor/UefaScreen/UefaScreen/Service%20Manager/ServiceManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25">
+               </Location>
+               <Location
+                  uuid = "FA81966E-3F70-41FC-AEA0-603AD48341D2 - 8b8fd325eb470072"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for UefaScreen.ServiceManager.execute&lt;&#x3c4;_0_0 where &#x3c4;_0_0: UefaScreen.URN&gt;(with: &#x3c4;_0_0) async throws -&gt; &#x3c4;_0_0.Derived"
+                  moduleName = "UefaScreen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kartikay/Documents/si-projects/UEFAPredictor/UefaScreen/UefaScreen/Service%20Manager/ServiceManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25">
+               </Location>
+               <Location
+                  uuid = "FA81966E-3F70-41FC-AEA0-603AD48341D2 - e6b2eb6645d3e671"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) suspend resume partial function for UefaScreen.ServiceManager.execute&lt;&#x3c4;_0_0 where &#x3c4;_0_0: UefaScreen.URN&gt;(with: &#x3c4;_0_0) async throws -&gt; &#x3c4;_0_0.Derived"
+                  moduleName = "UefaScreen"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kartikay/Documents/si-projects/UEFAPredictor/UefaScreen/UefaScreen/Service%20Manager/ServiceManager.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "25"
+                  endingLineNumber = "25">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7F6BF33E-2C0E-4289-8AD0-281B826A1BC8"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "UefaScreen/Service Manager/ServiceManager.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "27"
+            endingLineNumber = "27"
+            landmarkName = "execute(with:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

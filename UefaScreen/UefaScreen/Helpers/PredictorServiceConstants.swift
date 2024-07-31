@@ -8,6 +8,6 @@
 import Foundation
 
 struct PredictorParamKeys {
-    static let guid = "{{GUID}}"
-    static let buster = "{{BUSTER}}"
+    static let guid = "{GUID}"
+    static let buster = "{BUSTER}"
 }

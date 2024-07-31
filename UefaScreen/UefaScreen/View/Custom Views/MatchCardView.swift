@@ -107,7 +107,9 @@ struct MatchCardView: View {
                 Spacer()
                 Button(action: {
                     withAnimation(.easeInOut(duration: 0.5)) {
-                        viewModel.showLastFiveMatchView = true
+                       viewModel.submitPrediction()
+                       viewModel.userPrediction()
+                        viewModel.showLastFiveMatchView = false
                         viewModel.selectedMatchCardDetail = matchCardDetail
                     }
                 }) {
@@ -409,7 +411,7 @@ struct MatchCardView: View {
     var boosterButton: some View {
         Button(action: {
             matchCardViewModel.matchCardVariable.isBoosterApplied.toggle()
-            
+            viewModel.boosterApplied()
             if viewModel.boosterAppliedMatchID == matchCardDetail.matchID {
                 viewModel.boosterAppliedMatchID = String()
             } else {
