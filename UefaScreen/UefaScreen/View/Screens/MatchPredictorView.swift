@@ -16,8 +16,6 @@ struct MatchPredictorView: View {
             NavigationView {
                 VStack {
                     VStack {
-//                        HStack {
-//                            Spacer(minLength: commonData.orientation.isLandscape ? 50 : 0)
                             ScrollViewReader { proxy in
                                 ScrollView {
                                     LazyVStack(pinnedViews: [.sectionHeaders]) {
@@ -30,7 +28,7 @@ struct MatchPredictorView: View {
                                         .id("top")
                                         .frame(height: 50)
                                         .background(Color.grey000D40)
-
+                                        
                                         Section(header: matchPredictorHeaderView) {     //Header View
                                             
                                             dataAndShareButtonView                      //Data And Share Button View
@@ -43,11 +41,19 @@ struct MatchPredictorView: View {
                                             proxy.scrollTo("top", anchor: .zero)
                                         }
                                     }
+                                    .gesture(
+                                        DragGesture()
+                                            .onEnded { value in
+                                                if value.translation.width > 10 {
+                                                    changeView(for: "right")
+                                                } else if value.translation.width < -10 {
+                                                    changeView(for: "left")
+                                                }
+                                            }
+                                    )
                                 }
                             }
-//                            Spacer(minLength: commonData.orientation.isLandscape ? 50 : 0)
-//                        }
-                        .navigationBarStyle(backgroundImage: "QSDKNavigationBG", titleColor: .white, points: 0 /*viewModel.allMatchDaysArr?.reduce(0){$0 + ($1.points ?? 0)}*/)
+                        .navigationBarStyle(backgroundImage: "QSDKNavigationBG", titleColor: .white, points: 0)
                     }
                 }
                 .foregroundColor(.white)
@@ -85,8 +91,6 @@ struct MatchPredictorView: View {
                                     .font(.footnote)
                                     .font(.system(size: 50))
                                     .padding(.top, 10)
-//                                Text("\(data.points ?? 0) pts")
-//                                    .bold()
                                 Rectangle()
                                     .padding(.bottom, -1)
                                     .frame(height: 2)
@@ -99,7 +103,6 @@ struct MatchPredictorView: View {
                     }
                     Spacer()
                 }
-                
                 .padding(.leading,20)
             }
             
@@ -113,7 +116,6 @@ struct MatchPredictorView: View {
     //MARK: Data And Share Button View
     var dataAndShareButtonView: some View {
         HStack(spacing:0) {
-//            Text(viewModel.allMatchDaysArr?[viewModel.allMatchDaysArr?.firstIndex(where: { Element in Element.matchDayID == viewModel.selectedMatchDay}) ?? 0].dateRange ?? "")
             Text("15 - 19 July")
                 .font(.system(size: 15, weight: .bold))
             Spacer()
@@ -206,6 +208,20 @@ struct MatchPredictorView: View {
                 })
         )
     }
+    
+    // MARK: Function for swipe
+    
+    func changeView(for direction: String) {
+          if direction == "right" {
+              if let selectedMatchDay = viewModel.selectedMatchDay, selectedMatchDay > 1 {
+                  viewModel.selectedMatchDay = selectedMatchDay - 1
+              }
+          } else if direction == "left" {
+              if let selectedMatchDay = viewModel.selectedMatchDay, selectedMatchDay <= viewModel.matchDayArray.count - 1 {
+                  viewModel.selectedMatchDay = selectedMatchDay + 1
+              }
+          }
+      }
 }
 
 //#Preview {
